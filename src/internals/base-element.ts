@@ -5,6 +5,8 @@ export abstract class BaseElement extends LitElement {
     :host {
       box-sizing: border-box;
       font-family: var(--ds-font-family-sans, system-ui, sans-serif);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     *,
@@ -14,7 +16,7 @@ export abstract class BaseElement extends LitElement {
     }
 
     :focus-visible {
-      outline: var(--ds-focus-ring-width, 2px) solid var(--ds-focus-ring-color, #4f46e5);
+      outline: var(--ds-focus-ring-width, 2px) solid var(--ds-focus-ring-color, #8b5cf6);
       outline-offset: var(--ds-focus-ring-offset, 2px);
       border-radius: var(--ds-radius-sm, 0.25rem);
     }

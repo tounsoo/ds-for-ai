@@ -14,7 +14,7 @@ import { BaseElement } from '../../internals/base-element.js';
  *
  * @attr {1 | 2 | 3 | 4 | 5 | 6} [level=1] - HTML heading level; maps to h1–h6
  * @attr {string} text - Heading text content (required)
- * @attr {'4xl' | '3xl' | '2xl' | 'xl' | 'lg' | 'md' | 'sm'} [size] - Visual size override;
+ * @attr {'5xl' | '4xl' | '3xl' | '2xl' | 'xl' | 'lg' | 'md' | 'sm'} [size] - Visual size override;
  *   defaults to a sensible scale per level (level 1 → 4xl, level 2 → 3xl, etc.)
  * @attr {'normal' | 'medium' | 'semibold' | 'bold'} [weight='bold'] - Font weight
  * @attr {'tight' | 'normal'} [leading='tight'] - Line height
@@ -47,6 +47,7 @@ export class DsHeading extends BaseElement {
         color: var(--ds-color-text-primary);
       }
 
+      .size-5xl { font-size: var(--ds-text-5xl); letter-spacing: -0.05em; }
       .size-4xl { font-size: var(--ds-text-4xl); letter-spacing: -0.04em; }
       .size-3xl { font-size: var(--ds-text-3xl); letter-spacing: -0.03em; }
       .size-2xl { font-size: var(--ds-text-2xl); letter-spacing: -0.02em; }
@@ -72,7 +73,7 @@ export class DsHeading extends BaseElement {
   @property({ type: String }) text = '';
 
   /** @attr */
-  @property({ type: String }) size?: '4xl' | '3xl' | '2xl' | 'xl' | 'lg' | 'md' | 'sm';
+  @property({ type: String }) size?: '5xl' | '4xl' | '3xl' | '2xl' | 'xl' | 'lg' | 'md' | 'sm';
 
   /** @attr */
   @property({ type: String }) weight: 'normal' | 'medium' | 'semibold' | 'bold' = 'bold';

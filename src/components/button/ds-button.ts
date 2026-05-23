@@ -75,7 +75,7 @@ export class DsButton extends BaseElement {
           color var(--ds-duration-fast) var(--ds-easing-default);
       }
 
-      :host([size='small']) button  { font-size: var(--ds-text-xs); padding: var(--ds-space-1) var(--ds-space-3);  min-height: 2.125rem; }
+      :host([size='small']) button  { font-size: var(--ds-text-sm); padding: var(--ds-space-1) var(--ds-space-3);  min-height: 2.125rem; }
       :host([size='large']) button  { font-size: var(--ds-text-md); padding: var(--ds-space-3) var(--ds-space-6);  min-height: 3.25rem; }
       :host(:not([size])) button,
       :host([size='medium']) button { font-size: var(--ds-text-sm); padding: var(--ds-space-2) var(--ds-space-4);  min-height: 2.75rem; }
@@ -84,7 +84,7 @@ export class DsButton extends BaseElement {
       :host(:not([variant])) button,
       :host([variant='prominent']) button {
         background: var(--ds-color-action-prominent);
-        color: var(--ds-color-text-on-action);
+        color: var(--ds-color-action-prominent-fg);
       }
       :host(:not([variant])) button:hover:not(:disabled),
       :host([variant='prominent']) button:hover:not(:disabled) {

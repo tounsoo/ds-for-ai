@@ -1,11 +1,12 @@
 const TOKEN_CSS = `
 :root {
   /* ── Primitives ──────────────────────────────────────── */
-  --ds-p-indigo-50:  #eef2ff;
-  --ds-p-indigo-100: #e0e7ff;
-  --ds-p-indigo-500: #6366f1;
-  --ds-p-indigo-600: #4f46e5;
-  --ds-p-indigo-700: #4338ca;
+  --ds-p-zinc-50:  #fafafa;
+  --ds-p-zinc-100: #f4f4f5;
+  --ds-p-zinc-700: #3f3f46;
+  --ds-p-zinc-800: #27272a;
+  --ds-p-zinc-900: #18181b;
+  --ds-p-zinc-950: #09090b;
   --ds-p-violet-50:  #f5f3ff;
   --ds-p-violet-100: #ede9fe;
   --ds-p-violet-500: #8b5cf6;
@@ -37,24 +38,25 @@ const TOKEN_CSS = `
   --ds-color-surface-overlay:   var(--ds-p-neutral-0);
   --ds-color-border-default:    var(--ds-p-neutral-200);
   --ds-color-border-strong:     var(--ds-p-neutral-300);
-  --ds-color-border-focus:      var(--ds-p-indigo-500);
+  --ds-color-border-focus:      var(--ds-p-violet-500);
   --ds-color-text-primary:      var(--ds-p-neutral-900);
   --ds-color-text-secondary:    var(--ds-p-neutral-600);
   --ds-color-text-disabled:     var(--ds-p-neutral-400);
   --ds-color-text-inverse:      var(--ds-p-neutral-0);
   --ds-color-text-on-action:    var(--ds-p-neutral-0);
-  --ds-color-action-prominent:        var(--ds-p-indigo-600);
-  --ds-color-action-prominent-hover:  var(--ds-p-indigo-700);
-  --ds-color-action-prominent-subtle: var(--ds-p-indigo-50);
-  --ds-color-action-accent:           var(--ds-p-violet-600);
-  --ds-color-action-accent-hover:     var(--ds-p-violet-700);
-  --ds-color-action-accent-subtle:    var(--ds-p-violet-50);
-  --ds-color-action-danger:           var(--ds-p-red-600);
-  --ds-color-action-danger-hover:     var(--ds-p-red-500);
-  --ds-color-action-danger-subtle:    #fef2f2;
-  --ds-color-status-success:          var(--ds-p-green-500);
-  --ds-color-status-warning:          var(--ds-p-amber-400);
-  --ds-color-status-error:            var(--ds-p-red-500);
+  --ds-color-action-prominent:         var(--ds-p-zinc-950);
+  --ds-color-action-prominent-hover:   var(--ds-p-zinc-700);
+  --ds-color-action-prominent-subtle:  var(--ds-p-zinc-100);
+  --ds-color-action-prominent-fg:      var(--ds-p-neutral-0);
+  --ds-color-action-accent:            var(--ds-p-violet-600);
+  --ds-color-action-accent-hover:      var(--ds-p-violet-700);
+  --ds-color-action-accent-subtle:     var(--ds-p-violet-50);
+  --ds-color-action-danger:            var(--ds-p-red-600);
+  --ds-color-action-danger-hover:      var(--ds-p-red-500);
+  --ds-color-action-danger-subtle:     #fef2f2;
+  --ds-color-status-success:           var(--ds-p-green-500);
+  --ds-color-status-warning:           var(--ds-p-amber-400);
+  --ds-color-status-error:             var(--ds-p-red-500);
 
   /* ── Typography ──────────────────────────────────────── */
   --ds-font-family-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -67,6 +69,7 @@ const TOKEN_CSS = `
   --ds-text-2xl:  1.5rem;
   --ds-text-3xl:  1.875rem;
   --ds-text-4xl:  2.25rem;
+  --ds-text-5xl:  3rem;
   --ds-font-weight-regular:  400;
   --ds-font-weight-medium:   500;
   --ds-font-weight-semibold: 600;
@@ -97,7 +100,7 @@ const TOKEN_CSS = `
 
   /* ── Shadow ──────────────────────────────────────────── */
   --ds-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --ds-shadow-md: 0 4px 12px -2px rgb(79 70 229 / 0.08), 0 2px 6px -2px rgb(0 0 0 / 0.06);
+  --ds-shadow-md: 0 4px 12px -2px rgb(0 0 0 / 0.08), 0 2px 6px -2px rgb(0 0 0 / 0.04);
   --ds-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 
   /* ── Motion ──────────────────────────────────────────── */
@@ -120,13 +123,13 @@ const TOKEN_CSS = `
     --ds-color-surface-overlay:   var(--ds-p-neutral-900);
     --ds-color-border-default:    var(--ds-p-neutral-800);
     --ds-color-border-strong:     var(--ds-p-neutral-700);
-    --ds-color-border-focus:      var(--ds-p-indigo-500);
     --ds-color-text-primary:      var(--ds-p-neutral-50);
     --ds-color-text-secondary:    var(--ds-p-neutral-400);
     --ds-color-text-inverse:      var(--ds-p-neutral-950);
-    --ds-color-action-prominent:        var(--ds-p-indigo-500);
-    --ds-color-action-prominent-hover:  var(--ds-p-indigo-600);
-    --ds-color-action-prominent-subtle: #1e1b4b;
+    --ds-color-action-prominent:        var(--ds-p-zinc-50);
+    --ds-color-action-prominent-hover:  var(--ds-p-zinc-100);
+    --ds-color-action-prominent-subtle: var(--ds-p-zinc-800);
+    --ds-color-action-prominent-fg:     var(--ds-p-zinc-950);
     --ds-color-action-accent:           var(--ds-p-violet-500);
     --ds-color-action-accent-hover:     var(--ds-p-violet-600);
     --ds-color-action-accent-subtle:    #2e1065;

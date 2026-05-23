@@ -57,7 +57,7 @@ export class DsBadge extends BaseElement {
 
       :host([size='sm']) span { font-size: var(--ds-text-xs); padding: 0.125rem var(--ds-space-2); }
       :host(:not([size])) span,
-      :host([size='md']) span { font-size: var(--ds-text-xs); padding: 0.1875rem var(--ds-space-2); }
+      :host([size='md']) span { font-size: var(--ds-text-sm); padding: 0.25rem var(--ds-space-3); }
 
       :host(:not([variant])) span,
       :host([variant='neutral']) span {

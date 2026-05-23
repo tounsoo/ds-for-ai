@@ -77,6 +77,7 @@ export class DsInput extends BaseElement {
         padding: var(--ds-space-2) var(--ds-space-3);
         font-size: var(--ds-text-sm);
         font-family: var(--ds-font-family-sans);
+        line-height: var(--ds-line-height-tight);
         color: var(--ds-color-text-primary);
         background: var(--ds-color-surface-default);
         border: 1.5px solid var(--ds-color-border-default);
@@ -93,7 +94,7 @@ export class DsInput extends BaseElement {
 
       input:focus {
         border-color: var(--ds-color-border-focus);
-        box-shadow: 0 0 0 3px rgb(99 102 241 / 0.2);
+        box-shadow: 0 0 0 3px rgb(139 92 246 / 0.2);
       }
 
       :host([error]) input {
