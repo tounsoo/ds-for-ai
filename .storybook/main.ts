@@ -14,6 +14,10 @@ const config: StorybookConfig = {
     autodocs: 'tag',
     defaultName: 'Overview',
   },
+  viteFinal: async (config) => ({
+    ...config,
+    base: process.env.CI ? '/ds-for-ai/' : '/',
+  }),
 };
 
 export default config;
