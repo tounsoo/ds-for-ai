@@ -1,0 +1,120 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Patterns / Layout recipes" />
+
+# Layout Recipes
+
+Common page layout patterns using `ds-layout`, `ds-stack`, and `ds-card`.
+
+---
+
+## Dashboard layout
+
+```html
+<ds-layout>
+  <!-- Header: brand + nav actions -->
+  <ds-stack slot="header" direction="row" justify="between" align="center">
+    <ds-heading level="1" text="Dashboard" size="xl"></ds-heading>
+    <ds-stack direction="row" gap="2">
+      <ds-badge label="Beta" variant="warning"></ds-badge>
+      <ds-button label="New project" variant="primary" size="small"></ds-button>
+    </ds-stack>
+  </ds-stack>
+
+  <!-- Sidebar: navigation list -->
+  <ds-stack slot="sidebar" gap="1">
+    <ds-button label="Overview" variant="ghost"></ds-button>
+    <ds-button label="Projects" variant="ghost"></ds-button>
+    <ds-button label="Settings" variant="ghost"></ds-button>
+  </ds-stack>
+
+  <!-- Main: stat cards + content -->
+  <ds-stack gap="6">
+    <ds-stack direction="row" gap="4" wrap>
+      <ds-card variant="outlined" padding="md">
+        <ds-text content="Total projects" size="sm" color="secondary"></ds-text>
+        <ds-heading level="3" text="42" size="3xl"></ds-heading>
+      </ds-card>
+      <ds-card variant="outlined" padding="md">
+        <ds-text content="Active deployments" size="sm" color="secondary"></ds-text>
+        <ds-heading level="3" text="7" size="3xl"></ds-heading>
+      </ds-card>
+    </ds-stack>
+  </ds-stack>
+</ds-layout>
+```
+
+---
+
+## Settings page (single column)
+
+Use `max-width="md"` and omit the `sidebar` slot for a focused single-column layout.
+
+```html
+<ds-layout max-width="md" no-header>
+  <ds-stack gap="8">
+    <ds-heading level="1" text="Account settings"></ds-heading>
+
+    <ds-card heading="Profile" variant="outlined">
+      <ds-stack gap="4">
+        <ds-input label="Display name" value="Jane Smith"></ds-input>
+        <ds-input label="Email" type="email" value="jane@example.com"></ds-input>
+      </ds-stack>
+      <ds-button slot="footer" label="Save changes"></ds-button>
+    </ds-card>
+
+    <ds-card heading="Danger zone" variant="outlined">
+      <ds-text content="Permanently delete your account and all associated data." color="secondary"></ds-text>
+      <ds-button slot="footer" label="Delete account" variant="danger"></ds-button>
+    </ds-card>
+  </ds-stack>
+</ds-layout>
+```
+
+---
+
+## Form page
+
+```html
+<ds-layout max-width="sm" no-header no-footer>
+  <ds-card variant="elevated" padding="lg">
+    <ds-stack gap="6">
+      <ds-stack gap="1">
+        <ds-heading level="1" text="Sign in" size="2xl"></ds-heading>
+        <ds-text content="Enter your credentials to continue." color="secondary"></ds-text>
+      </ds-stack>
+
+      <ds-stack gap="4">
+        <ds-input label="Email address" type="email" required autocomplete="email"></ds-input>
+        <ds-input label="Password" type="password" required autocomplete="current-password"></ds-input>
+      </ds-stack>
+
+      <ds-button label="Sign in" type="submit"></ds-button>
+    </ds-stack>
+  </ds-card>
+</ds-layout>
+```
+
+---
+
+## Article / content page
+
+```html
+<ds-layout max-width="md" sidebar-position="right">
+  <ds-stack slot="sidebar" gap="4">
+    <ds-heading level="3" text="On this page" size="sm" weight="semibold"></ds-heading>
+    <ds-stack gap="1">
+      <ds-text content="Introduction" size="sm" color="secondary"></ds-text>
+      <ds-text content="Getting started" size="sm" color="secondary"></ds-text>
+      <ds-text content="API reference" size="sm" color="secondary"></ds-text>
+    </ds-stack>
+  </ds-stack>
+
+  <ds-stack gap="6">
+    <ds-heading level="1" text="Getting started"></ds-heading>
+    <ds-text content="Add the CDN script to your HTML page and start using components." leading="loose"></ds-text>
+    <ds-heading level="2" text="Installation" size="xl"></ds-heading>
+    <ds-text content="No build step required. Paste the script tag and go." leading="loose"></ds-text>
+  </ds-stack>
+</ds-layout>
+```

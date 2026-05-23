@@ -1,0 +1,87 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Patterns / Design guidelines" />
+
+# Design Guidelines
+
+Rules for consistent use of typography, color, spacing, and components.
+
+---
+
+## Typography hierarchy
+
+Use `ds-heading` for all structural headings. Never skip heading levels.
+
+| Use case | Element | Recommended size |
+|---|---|---|
+| Page title | `ds-heading level="1"` | `4xl` (default) |
+| Section header | `ds-heading level="2"` | `3xl` (default) |
+| Card/subsection | `ds-heading level="3"` | `2xl` (default) |
+| Body copy | `ds-text` | `md` (default) |
+| Secondary info | `ds-text color="secondary"` | `sm` |
+| Captions/labels | `ds-text` | `xs` |
+
+---
+
+## Color usage
+
+| Token | Use when |
+|---|---|
+| `variant="primary"` (buttons, badges) | Main CTA, active state, selected |
+| `variant="secondary"` (buttons) | Supporting actions alongside a primary |
+| `variant="ghost"` (buttons) | Tertiary, inline, or nav actions |
+| `variant="danger"` (buttons, badges) | Irreversible destructive actions only |
+| `variant="success"` (badges) | Completed, active, healthy states |
+| `variant="warning"` (badges) | Degraded, attention-needed states |
+| `variant="error"` (badges, input error) | Failed, invalid, broken states |
+
+Never use `variant="danger"` for warnings or informational states. Reserve it strictly for destructive actions.
+
+---
+
+## Spacing rhythm
+
+Use the `--ds-space-*` token scale exclusively. Do not set arbitrary `px` values.
+
+| Scale | Value | Use for |
+|---|---|---|
+| `gap="1"` | 4px | Tight icon/label pairs |
+| `gap="2"` | 8px | Inline element groups |
+| `gap="3"` | 12px | Compact form fields |
+| `gap="4"` | 16px | Standard form fields, list items |
+| `gap="5"` | 20px | Card content sections |
+| `gap="6"` | 24px | Major content sections |
+| `gap="8"` | 32px | Page-level section breaks |
+
+---
+
+## Component selection guide
+
+```
+Need to trigger an action?
+  → ds-button
+
+Need to display text?
+  Structural heading → ds-heading
+  Body / label text  → ds-text
+  Status / tag       → ds-badge
+
+Need user input?
+  Single-line text   → ds-input (type="text"|"email"|"password"|"number"...)
+
+Need to group content?
+  Visual card surface          → ds-card
+  Spacing-only flex container  → ds-stack
+  Full-page layout             → ds-layout
+```
+
+---
+
+## Accessibility rules
+
+1. **Always provide `label`** on `ds-button` and `ds-input`. Never omit it.
+2. **Don't skip heading levels.** Use `ds-heading level="1"` → `level="2"` → `level="3"` in order.
+3. **Use `type="submit"` on buttons inside forms.** Default `type="button"` does not submit forms.
+4. **Use `error` on `ds-input`** for validation messages — do not put error text in a separate `ds-text` element outside the input.
+5. **Use `variant="danger"` only for destructive actions.** Don't use it for errors or warnings.
+6. **Decorative badges**: set `variant="decorative"` so assistive technology ignores them.

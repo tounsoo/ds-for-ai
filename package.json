@@ -1,0 +1,51 @@
+{
+  "name": "@tounsoo/ds4ai",
+  "version": "0.1.0",
+  "description": "AI-consumable design system built with web components. Import from CDN and use via HTML attributes — no framework required.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "customElements": "dist/custom-elements.json",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./custom-elements.json": "./dist/custom-elements.json"
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsdown && cem analyze --litelement --outdir dist",
+    "test": "vitest --project unit",
+    "test:sr": "vitest --project sr",
+    "test:all": "vitest",
+    "typecheck": "tsc --noEmit",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "prepare": "npm run build"
+  },
+  "keywords": ["design-system", "web-components", "lit", "ai", "accessibility"],
+  "license": "MIT",
+  "dependencies": {
+    "lit": "^3.3.3"
+  },
+  "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.10.5",
+    "@guidepup/virtual-screen-reader": "^0.32.1",
+    "@open-wc/testing": "^4.0.0",
+    "@storybook/addon-docs": "^10.3.5",
+    "@storybook/web-components": "^10.3.5",
+    "@storybook/web-components-vite": "^10.3.5",
+    "@vitest/browser": "^4.1.4",
+    "axe-core": "^4.10.0",
+    "jsdom": "^26.0.0",
+    "playwright": "^1.52.0",
+    "storybook": "^10.3.5",
+    "tsdown": "latest",
+    "typescript": "^5.8.3",
+    "vite": "^8.0.0",
+    "vite-plugin-cem": "latest",
+    "vitest": "^4.1.7"
+  }
+}
