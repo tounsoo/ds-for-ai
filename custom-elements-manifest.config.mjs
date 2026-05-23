@@ -3,5 +3,5 @@ export default {
   exclude: ['**/*.test.ts', '**/*.stories.ts'],
   outdir: '.',
   litelement: true,
-  packagejson: true,
+  packagejson: false,
 };
