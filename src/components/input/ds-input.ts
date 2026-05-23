@@ -93,7 +93,7 @@ export class DsInput extends BaseElement {
 
       input:focus {
         border-color: var(--ds-color-border-focus);
-        box-shadow: 0 0 0 var(--ds-focus-ring-width) color-mix(in srgb, var(--ds-focus-ring-color) 30%, transparent);
+        box-shadow: 0 0 0 3px rgb(99 102 241 / 0.2);
       }
 
       :host([error]) input {

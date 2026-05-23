@@ -7,12 +7,12 @@ import { BaseElement } from '../../internals/base-element.js';
  * this component has no slot children.
  *
  * @element ds-button
- * @summary Use `ds-button` for any clickable action. Prefer `variant="primary"` for the
- * main CTA, `secondary` for supplementary actions, `ghost` for tertiary actions,
- * and `danger` for irreversible destructive operations.
+ * @summary Use `ds-button` for any clickable action. Use `variant="prominent"` for the
+ * main CTA, `accent` for a complementary highlighted action, `subtle` for secondary
+ * actions, `ghost` for tertiary actions, and `danger` for irreversible destructive operations.
  *
  * @attr {string} label - Visible button text and accessible name (required)
- * @attr {'primary' | 'secondary' | 'ghost' | 'danger'} [variant='primary'] - Visual intent
+ * @attr {'prominent' | 'accent' | 'subtle' | 'ghost' | 'danger'} [variant='prominent'] - Visual intent
  * @attr {'small' | 'medium' | 'large'} [size='medium'] - Size scale
  * @attr {boolean} [disabled=false] - Disables interaction and sets aria-disabled
  * @attr {boolean} [loading=false] - Shows a spinner; implies disabled; announces "Loading" to screen readers
@@ -26,6 +26,10 @@ import { BaseElement } from '../../internals/base-element.js';
  * <!-- CDN usage — single script tag, no bundler required -->
  * <script type="module" src="https://cdn.jsdelivr.net/npm/@tounsoo/ds4ai/dist/index.js"></script>
  * <ds-button label="Save changes"></ds-button>
+ *
+ * @example
+ * <!-- Accent variant for a complementary action -->
+ * <ds-button label="Upgrade plan" variant="accent"></ds-button>
  *
  * @example
  * <!-- Danger variant with small size -->
@@ -60,39 +64,53 @@ export class DsButton extends BaseElement {
         cursor: pointer;
         font-family: var(--ds-font-family-sans);
         font-weight: var(--ds-font-weight-medium);
+        letter-spacing: -0.01em;
         line-height: var(--ds-line-height-tight);
         text-decoration: none;
         white-space: nowrap;
         transition:
           background-color var(--ds-duration-fast) var(--ds-easing-default),
           border-color var(--ds-duration-fast) var(--ds-easing-default),
+          box-shadow var(--ds-duration-fast) var(--ds-easing-default),
           color var(--ds-duration-fast) var(--ds-easing-default);
       }
 
-      :host([size='small']) button { font-size: var(--ds-text-xs); padding: var(--ds-space-1) var(--ds-space-3); min-height: 2rem; }
-      :host([size='large']) button { font-size: var(--ds-text-md); padding: var(--ds-space-3) var(--ds-space-6); min-height: 3rem; }
+      :host([size='small']) button  { font-size: var(--ds-text-xs); padding: var(--ds-space-1) var(--ds-space-3);  min-height: 2.125rem; }
+      :host([size='large']) button  { font-size: var(--ds-text-md); padding: var(--ds-space-3) var(--ds-space-6);  min-height: 3.25rem; }
       :host(:not([size])) button,
-      :host([size='medium']) button { font-size: var(--ds-text-sm); padding: var(--ds-space-2) var(--ds-space-4); min-height: 2.5rem; }
+      :host([size='medium']) button { font-size: var(--ds-text-sm); padding: var(--ds-space-2) var(--ds-space-4);  min-height: 2.75rem; }
 
+      /* prominent (default) */
       :host(:not([variant])) button,
-      :host([variant='primary']) button {
-        background: var(--ds-color-action-primary);
-        color: var(--ds-color-action-primary-text);
+      :host([variant='prominent']) button {
+        background: var(--ds-color-action-prominent);
+        color: var(--ds-color-text-on-action);
       }
       :host(:not([variant])) button:hover:not(:disabled),
-      :host([variant='primary']) button:hover:not(:disabled) {
-        background: var(--ds-color-action-primary-hover);
+      :host([variant='prominent']) button:hover:not(:disabled) {
+        background: var(--ds-color-action-prominent-hover);
       }
 
-      :host([variant='secondary']) button {
+      /* accent */
+      :host([variant='accent']) button {
+        background: var(--ds-color-action-accent);
+        color: var(--ds-color-text-on-action);
+      }
+      :host([variant='accent']) button:hover:not(:disabled) {
+        background: var(--ds-color-action-accent-hover);
+      }
+
+      /* subtle */
+      :host([variant='subtle']) button {
         background: transparent;
-        color: var(--ds-color-action-primary);
-        border-color: var(--ds-color-action-primary);
+        color: var(--ds-color-action-prominent);
+        border-color: var(--ds-color-action-prominent);
       }
-      :host([variant='secondary']) button:hover:not(:disabled) {
-        background: var(--ds-color-action-primary-subtle);
+      :host([variant='subtle']) button:hover:not(:disabled) {
+        background: var(--ds-color-action-prominent-subtle);
       }
 
+      /* ghost */
       :host([variant='ghost']) button {
         background: transparent;
         color: var(--ds-color-text-primary);
@@ -101,9 +119,10 @@ export class DsButton extends BaseElement {
         background: var(--ds-color-surface-subtle);
       }
 
+      /* danger */
       :host([variant='danger']) button {
         background: var(--ds-color-action-danger);
-        color: #fff;
+        color: var(--ds-color-text-on-action);
       }
       :host([variant='danger']) button:hover:not(:disabled) {
         background: var(--ds-color-action-danger-hover);
@@ -134,7 +153,7 @@ export class DsButton extends BaseElement {
   @property({ type: String }) label = '';
 
   /** @attr */
-  @property({ type: String, reflect: true }) variant: 'primary' | 'secondary' | 'ghost' | 'danger' = 'primary';
+  @property({ type: String, reflect: true }) variant: 'prominent' | 'accent' | 'subtle' | 'ghost' | 'danger' = 'prominent';
 
   /** @attr */
   @property({ type: String, reflect: true }) size: 'small' | 'medium' | 'large' = 'medium';

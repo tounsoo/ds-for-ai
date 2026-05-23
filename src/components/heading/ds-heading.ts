@@ -47,10 +47,10 @@ export class DsHeading extends BaseElement {
         color: var(--ds-color-text-primary);
       }
 
-      .size-4xl { font-size: var(--ds-text-4xl); }
-      .size-3xl { font-size: var(--ds-text-3xl); }
-      .size-2xl { font-size: var(--ds-text-2xl); }
-      .size-xl  { font-size: var(--ds-text-xl);  }
+      .size-4xl { font-size: var(--ds-text-4xl); letter-spacing: -0.04em; }
+      .size-3xl { font-size: var(--ds-text-3xl); letter-spacing: -0.03em; }
+      .size-2xl { font-size: var(--ds-text-2xl); letter-spacing: -0.02em; }
+      .size-xl  { font-size: var(--ds-text-xl);  letter-spacing: -0.01em; }
       .size-lg  { font-size: var(--ds-text-lg);  }
       .size-md  { font-size: var(--ds-text-md);  }
       .size-sm  { font-size: var(--ds-text-sm);  }

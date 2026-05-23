@@ -14,7 +14,7 @@ export abstract class BaseElement extends LitElement {
     }
 
     :focus-visible {
-      outline: var(--ds-focus-ring-width, 2px) solid var(--ds-focus-ring-color, #3b82f6);
+      outline: var(--ds-focus-ring-width, 2px) solid var(--ds-focus-ring-color, #4f46e5);
       outline-offset: var(--ds-focus-ring-offset, 2px);
       border-radius: var(--ds-radius-sm, 0.25rem);
     }

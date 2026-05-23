@@ -28,8 +28,9 @@ Full-page layout with zones?   → ds-layout     (structure, accepts children)
 ## ds-button
 
 ```html
-<ds-button label="Save changes"></ds-button>
-<ds-button label="Cancel" variant="secondary"></ds-button>
+<ds-button label="Save changes"></ds-button><!-- prominent (default) — main CTA -->
+<ds-button label="Upgrade plan" variant="accent"></ds-button><!-- accent — complementary highlight -->
+<ds-button label="Cancel" variant="subtle"></ds-button><!-- subtle — secondary actions -->
 <ds-button label="Delete" variant="danger"></ds-button>
 <ds-button label="More" variant="ghost"></ds-button>
 <ds-button label="Saving..." loading></ds-button>
@@ -42,6 +43,9 @@ Full-page layout with zones?   → ds-layout     (structure, accepts children)
 Rules:
 - Always set `label` (required, used as accessible name)
 - Use `type="submit"` inside `<form>` elements
+- `variant="prominent"` → the single most important action per view (indigo)
+- `variant="accent"` → complementary highlighted actions (violet); use sparingly
+- `variant="subtle"` → secondary/cancel actions
 - `variant="danger"` → destructive actions only (delete, remove, revoke)
 - `variant="ghost"` → nav links, tertiary actions, icon-adjacent labels
 
@@ -98,7 +102,8 @@ Rules:
 <ds-badge label="Active" variant="success"></ds-badge>
 <ds-badge label="Pending" variant="warning"></ds-badge>
 <ds-badge label="Failed" variant="error"></ds-badge>
-<ds-badge label="New" variant="primary"></ds-badge>
+<ds-badge label="Design" variant="prominent"></ds-badge>
+<ds-badge label="New" variant="accent"></ds-badge>
 <ds-badge label="Draft" variant="neutral"></ds-badge>
 <ds-badge label="●" variant="decorative"></ds-badge><!-- hidden from screen readers -->
 ```
@@ -118,7 +123,7 @@ Rules:
 <!-- Horizontal row with space-between -->
 <ds-stack direction="row" justify="between" align="center">
   <ds-heading level="3" text="Results"></ds-heading>
-  <ds-button label="Export" variant="secondary"></ds-button>
+  <ds-button label="Export" variant="subtle"></ds-button>
 </ds-stack>
 
 <!-- Wrapping tag cloud -->
@@ -137,7 +142,7 @@ Gap values: `1`(4px) `2`(8px) `3`(12px) `4`(16px) `5`(20px) `6`(24px) `8`(32px) 
 ```html
 <ds-card heading="Summary" variant="outlined">
   <ds-text content="Body content goes here."></ds-text>
-  <ds-button slot="footer" label="View details" variant="secondary"></ds-button>
+  <ds-button slot="footer" label="View details" variant="subtle"></ds-button>
 </ds-card>
 ```
 

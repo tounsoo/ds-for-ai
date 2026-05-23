@@ -1,11 +1,16 @@
 const TOKEN_CSS = `
 :root {
   /* ── Primitives ──────────────────────────────────────── */
-  --ds-p-blue-50:  #eff6ff;
-  --ds-p-blue-100: #dbeafe;
-  --ds-p-blue-500: #3b82f6;
-  --ds-p-blue-600: #2563eb;
-  --ds-p-blue-700: #1d4ed8;
+  --ds-p-indigo-50:  #eef2ff;
+  --ds-p-indigo-100: #e0e7ff;
+  --ds-p-indigo-500: #6366f1;
+  --ds-p-indigo-600: #4f46e5;
+  --ds-p-indigo-700: #4338ca;
+  --ds-p-violet-50:  #f5f3ff;
+  --ds-p-violet-100: #ede9fe;
+  --ds-p-violet-500: #8b5cf6;
+  --ds-p-violet-600: #7c3aed;
+  --ds-p-violet-700: #6d28d9;
   --ds-p-red-400:  #f87171;
   --ds-p-red-500:  #ef4444;
   --ds-p-red-600:  #dc2626;
@@ -32,22 +37,24 @@ const TOKEN_CSS = `
   --ds-color-surface-overlay:   var(--ds-p-neutral-0);
   --ds-color-border-default:    var(--ds-p-neutral-200);
   --ds-color-border-strong:     var(--ds-p-neutral-300);
-  --ds-color-border-focus:      var(--ds-p-blue-500);
+  --ds-color-border-focus:      var(--ds-p-indigo-500);
   --ds-color-text-primary:      var(--ds-p-neutral-900);
   --ds-color-text-secondary:    var(--ds-p-neutral-600);
   --ds-color-text-disabled:     var(--ds-p-neutral-400);
   --ds-color-text-inverse:      var(--ds-p-neutral-0);
-  --ds-color-text-on-primary:   var(--ds-p-neutral-0);
-  --ds-color-action-primary:         var(--ds-p-blue-600);
-  --ds-color-action-primary-hover:   var(--ds-p-blue-700);
-  --ds-color-action-primary-subtle:  var(--ds-p-blue-50);
-  --ds-color-action-primary-text:    var(--ds-p-neutral-0);
-  --ds-color-action-danger:          var(--ds-p-red-600);
-  --ds-color-action-danger-hover:    var(--ds-p-red-500);
-  --ds-color-action-danger-subtle:   #fef2f2;
-  --ds-color-status-success:         var(--ds-p-green-500);
-  --ds-color-status-warning:         var(--ds-p-amber-400);
-  --ds-color-status-error:           var(--ds-p-red-500);
+  --ds-color-text-on-action:    var(--ds-p-neutral-0);
+  --ds-color-action-prominent:        var(--ds-p-indigo-600);
+  --ds-color-action-prominent-hover:  var(--ds-p-indigo-700);
+  --ds-color-action-prominent-subtle: var(--ds-p-indigo-50);
+  --ds-color-action-accent:           var(--ds-p-violet-600);
+  --ds-color-action-accent-hover:     var(--ds-p-violet-700);
+  --ds-color-action-accent-subtle:    var(--ds-p-violet-50);
+  --ds-color-action-danger:           var(--ds-p-red-600);
+  --ds-color-action-danger-hover:     var(--ds-p-red-500);
+  --ds-color-action-danger-subtle:    #fef2f2;
+  --ds-color-status-success:          var(--ds-p-green-500);
+  --ds-color-status-warning:          var(--ds-p-amber-400);
+  --ds-color-status-error:            var(--ds-p-red-500);
 
   /* ── Typography ──────────────────────────────────────── */
   --ds-font-family-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -81,16 +88,16 @@ const TOKEN_CSS = `
   --ds-space-16: 4rem;
 
   /* ── Radius ──────────────────────────────────────────── */
-  --ds-radius-sm:   0.25rem;
-  --ds-radius-md:   0.375rem;
-  --ds-radius-lg:   0.5rem;
-  --ds-radius-xl:   0.75rem;
-  --ds-radius-2xl:  1rem;
+  --ds-radius-sm:   0.375rem;
+  --ds-radius-md:   0.5rem;
+  --ds-radius-lg:   0.75rem;
+  --ds-radius-xl:   1rem;
+  --ds-radius-2xl:  1.25rem;
   --ds-radius-full: 9999px;
 
   /* ── Shadow ──────────────────────────────────────────── */
   --ds-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --ds-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --ds-shadow-md: 0 4px 12px -2px rgb(79 70 229 / 0.08), 0 2px 6px -2px rgb(0 0 0 / 0.06);
   --ds-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 
   /* ── Motion ──────────────────────────────────────────── */
@@ -113,14 +120,17 @@ const TOKEN_CSS = `
     --ds-color-surface-overlay:   var(--ds-p-neutral-900);
     --ds-color-border-default:    var(--ds-p-neutral-800);
     --ds-color-border-strong:     var(--ds-p-neutral-700);
+    --ds-color-border-focus:      var(--ds-p-indigo-500);
     --ds-color-text-primary:      var(--ds-p-neutral-50);
     --ds-color-text-secondary:    var(--ds-p-neutral-400);
     --ds-color-text-inverse:      var(--ds-p-neutral-950);
-    --ds-color-text-on-primary:   var(--ds-p-neutral-0);
-    --ds-color-action-primary:         var(--ds-p-blue-500);
-    --ds-color-action-primary-hover:   var(--ds-p-blue-600);
-    --ds-color-action-primary-subtle:  #1e3a5f;
-    --ds-color-action-danger-subtle:   #3b1010;
+    --ds-color-action-prominent:        var(--ds-p-indigo-500);
+    --ds-color-action-prominent-hover:  var(--ds-p-indigo-600);
+    --ds-color-action-prominent-subtle: #1e1b4b;
+    --ds-color-action-accent:           var(--ds-p-violet-500);
+    --ds-color-action-accent-hover:     var(--ds-p-violet-600);
+    --ds-color-action-accent-subtle:    #2e1065;
+    --ds-color-action-danger-subtle:    #3b1010;
   }
 }
 `;

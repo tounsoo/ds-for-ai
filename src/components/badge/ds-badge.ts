@@ -8,11 +8,11 @@ import { BaseElement } from '../../internals/base-element.js';
  *
  * @element ds-badge
  * @summary Use `ds-badge` for status indicators (Active, Pending, Error), category
- * tags, or short contextual labels. Set `variant="decorative"` for badges that
- * are aria-hidden (decorative use only).
+ * tags, or short contextual labels. Use `prominent` for primary category tags,
+ * `accent` for highlighted/featured tags, and `decorative` for aria-hidden badges.
  *
  * @attr {string} label - Badge text (required)
- * @attr {'neutral' | 'primary' | 'success' | 'warning' | 'error' | 'decorative'} [variant='neutral'] - Color and semantic intent;
+ * @attr {'neutral' | 'prominent' | 'accent' | 'success' | 'warning' | 'error' | 'decorative'} [variant='neutral'] - Color and semantic intent;
  *   `decorative` hides the badge from assistive technology
  * @attr {'sm' | 'md'} [size='md'] - Size scale
  *
@@ -25,8 +25,12 @@ import { BaseElement } from '../../internals/base-element.js';
  * <ds-badge label="Failed" variant="error"></ds-badge>
  *
  * @example
- * <!-- Category tag -->
- * <ds-badge label="Design" variant="primary"></ds-badge>
+ * <!-- Primary category tag -->
+ * <ds-badge label="Design" variant="prominent"></ds-badge>
+ *
+ * @example
+ * <!-- Highlighted/featured tag -->
+ * <ds-badge label="New" variant="accent"></ds-badge>
  *
  * @example
  * <!-- Decorative (visually hidden from screen readers) -->
@@ -62,9 +66,14 @@ export class DsBadge extends BaseElement {
         border: 1px solid var(--ds-color-border-default);
       }
 
-      :host([variant='primary']) span {
-        background: var(--ds-color-action-primary-subtle);
-        color: var(--ds-color-action-primary);
+      :host([variant='prominent']) span {
+        background: var(--ds-color-action-prominent-subtle);
+        color: var(--ds-color-action-prominent);
+      }
+
+      :host([variant='accent']) span {
+        background: var(--ds-color-action-accent-subtle);
+        color: var(--ds-color-action-accent);
       }
 
       :host([variant='success']) span {
@@ -93,7 +102,7 @@ export class DsBadge extends BaseElement {
   @property({ type: String }) label = '';
 
   /** @attr */
-  @property({ type: String, reflect: true }) variant: 'neutral' | 'primary' | 'success' | 'warning' | 'error' | 'decorative' = 'neutral';
+  @property({ type: String, reflect: true }) variant: 'neutral' | 'prominent' | 'accent' | 'success' | 'warning' | 'error' | 'decorative' = 'neutral';
 
   /** @attr */
   @property({ type: String, reflect: true }) size: 'sm' | 'md' = 'md';

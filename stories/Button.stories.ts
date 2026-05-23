@@ -7,14 +7,14 @@ const meta: Meta = {
   component: 'ds-button',
   tags: ['autodocs'],
   argTypes: {
-    variant: { control: 'select', options: ['primary', 'secondary', 'ghost', 'danger'] },
+    variant: { control: 'select', options: ['prominent', 'accent', 'subtle', 'ghost', 'danger'] },
     size: { control: 'select', options: ['small', 'medium', 'large'] },
     type: { control: 'select', options: ['button', 'submit', 'reset'] },
     disabled: { control: 'boolean' },
     loading: { control: 'boolean' },
     label: { control: 'text' },
   },
-  args: { label: 'Click me', variant: 'primary', size: 'medium', disabled: false, loading: false, type: 'button' },
+  args: { label: 'Click me', variant: 'prominent', size: 'medium', disabled: false, loading: false, type: 'button' },
   render: (args) => html`
     <ds-button
       label=${args['label']}
@@ -30,9 +30,11 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
-export const Primary: Story = {};
+export const Prominent: Story = {};
 
-export const Secondary: Story = { args: { variant: 'secondary' } };
+export const Accent: Story = { args: { variant: 'accent', label: 'Upgrade plan' } };
+
+export const Subtle: Story = { args: { variant: 'subtle' } };
 
 export const Ghost: Story = { args: { variant: 'ghost' } };
 
@@ -50,8 +52,9 @@ export const AllVariants: Story = {
   name: 'All Variants',
   render: () => html`
     <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:center">
-      <ds-button label="Primary" variant="primary"></ds-button>
-      <ds-button label="Secondary" variant="secondary"></ds-button>
+      <ds-button label="Prominent" variant="prominent"></ds-button>
+      <ds-button label="Accent" variant="accent"></ds-button>
+      <ds-button label="Subtle" variant="subtle"></ds-button>
       <ds-button label="Ghost" variant="ghost"></ds-button>
       <ds-button label="Danger" variant="danger"></ds-button>
       <ds-button label="Loading" loading></ds-button>
