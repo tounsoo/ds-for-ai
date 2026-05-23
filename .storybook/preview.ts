@@ -6,7 +6,16 @@ import '../src/index.js';
 
 setCustomElementsManifest(manifest);
 
+const DARK_BG = '#030712';
+
 const preview: Preview = {
+  decorators: [
+    (story, context) => {
+      const bg = (context.globals as Record<string, { value?: string }>)['backgrounds']?.value;
+      document.documentElement.dataset.theme = bg === DARK_BG ? 'dark' : 'light';
+      return story();
+    },
+  ],
   parameters: {
     docs: {
       extractComponentDescription: (

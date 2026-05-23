@@ -88,7 +88,7 @@ export class DsBadge extends BaseElement {
 
       :host([variant='error']) span {
         background: var(--ds-color-action-danger-subtle);
-        color: var(--ds-color-action-danger);
+        color: #b91c1c;
       }
 
       :host([variant='decorative']) span {
