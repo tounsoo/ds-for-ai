@@ -14,7 +14,9 @@
     },
     "./custom-elements.json": "./dist/custom-elements.json"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsdown && cem analyze --litelement --outdir dist",
     "test": "vitest --project unit",
@@ -25,7 +27,13 @@
     "build-storybook": "storybook build",
     "prepare": "npm run build"
   },
-  "keywords": ["design-system", "web-components", "lit", "ai", "accessibility"],
+  "keywords": [
+    "design-system",
+    "web-components",
+    "lit",
+    "ai",
+    "accessibility"
+  ],
   "license": "MIT",
   "dependencies": {
     "lit": "^3.3.3"
