@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liquid Glass Preview — @tounsoo/ds4ai</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+
+.dark{padding:3rem 4rem;min-height:100vh;background:
+  radial-gradient(ellipse 80% 80% at 10% 20%,rgba(124,58,237,.55) 0%,transparent 55%),
+  radial-gradient(ellipse 70% 70% at 85% 80%,rgba(14,165,233,.45) 0%,transparent 50%),
+  radial-gradient(ellipse 60% 60% at 60% 28%,rgba(236,72,153,.35) 0%,transparent 45%),
+  radial-gradient(ellipse 90% 90% at 40% 92%,rgba(16,185,129,.22) 0%,transparent 50%),#0a0a14}
+.light{padding:3rem 4rem;min-height:100vh;background:
+  radial-gradient(ellipse 70% 70% at 15% 22%,rgba(167,139,250,.32) 0%,transparent 55%),
+  radial-gradient(ellipse 60% 60% at 85% 78%,rgba(125,211,252,.38) 0%,transparent 50%),
+  radial-gradient(ellipse 55% 55% at 55% 35%,rgba(249,168,212,.28) 0%,transparent 45%),#f5f2ff}
+
+.tag{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:2.5rem}
+.dark .tag{color:rgba(255,255,255,.35)}.light .tag{color:rgba(0,0,0,.3)}
+h2{font-size:1.1rem;font-weight:600;letter-spacing:-.02em;margin-bottom:1rem}
+.dark h2{color:rgba(255,255,255,.88)}.light h2{color:rgba(9,9,11,.82)}
+.group{margin-bottom:3rem}.row{display:flex;gap:.75rem;align-items:center;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}
+
+/* ── Button base ─────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:.625rem 1.25rem;
+  min-height:2.625rem;border-radius:.75rem;font-family:inherit;font-size:.875rem;font-weight:500;
+  letter-spacing:-.01em;white-space:nowrap;cursor:pointer;border:none;outline:none;
+  transition:transform .1s ease,box-shadow .15s ease,background .15s ease}
+.btn:hover{transform:translateY(-1px)}.btn:active{transform:translateY(0)}
+
+/* ── Dark buttons ────────────────────────────────── */
+.dark .prominent{background:linear-gradient(158deg,rgba(55,55,62,.97),rgba(9,9,11,.99));color:#fff;
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 4px 16px rgba(0,0,0,.45),0 1px 3px rgba(0,0,0,.35),
+    inset 0 1.5px 0 rgba(255,255,255,.20),inset 0 -1px 0 rgba(0,0,0,.18)}
+.dark .prominent:hover{background:linear-gradient(158deg,rgba(70,70,78,.97),rgba(20,20,22,.99));
+  box-shadow:0 8px 24px rgba(0,0,0,.5),0 2px 6px rgba(0,0,0,.35),
+    inset 0 1.5px 0 rgba(255,255,255,.22),inset 0 -1px 0 rgba(0,0,0,.18)}
+
+.dark .accent{background:linear-gradient(158deg,rgba(165,110,255,.95),rgba(109,40,217,.99));color:#fff;
+  border:1px solid rgba(255,255,255,.22);
+  box-shadow:0 4px 24px rgba(109,40,217,.50),0 1px 4px rgba(0,0,0,.25),
+    inset 0 1.5px 0 rgba(255,255,255,.30),inset 0 -1px 0 rgba(0,0,0,.08)}
+.dark .accent:hover{box-shadow:0 8px 32px rgba(109,40,217,.60),0 2px 6px rgba(0,0,0,.25),
+  inset 0 1.5px 0 rgba(255,255,255,.32),inset 0 -1px 0 rgba(0,0,0,.08)}
+
+.dark .subtle{background:rgba(255,255,255,.10);color:rgba(255,255,255,.92);
+  border:1px solid rgba(255,255,255,.20);
+  backdrop-filter:blur(16px) saturate(1.8);-webkit-backdrop-filter:blur(16px) saturate(1.8);
+  box-shadow:0 2px 10px rgba(0,0,0,.25),inset 0 1.5px 0 rgba(255,255,255,.22),inset 0 -1px 0 rgba(0,0,0,.10)}
+.dark .subtle:hover{background:rgba(255,255,255,.16);
+  box-shadow:0 4px 16px rgba(0,0,0,.30),inset 0 1.5px 0 rgba(255,255,255,.26),inset 0 -1px 0 rgba(0,0,0,.10)}
+
+.dark .ghost{background:rgba(255,255,255,.07);color:rgba(255,255,255,.82);
+  border:1px solid rgba(255,255,255,.11);
+  backdrop-filter:blur(12px) saturate(1.6);-webkit-backdrop-filter:blur(12px) saturate(1.6);
+  box-shadow:inset 0 1.5px 0 rgba(255,255,255,.14),inset 0 -1px 0 rgba(0,0,0,.08)}
+.dark .ghost:hover{background:rgba(255,255,255,.12)}
+
+.dark .danger{background:linear-gradient(158deg,rgba(248,113,113,.92),rgba(185,28,28,.99));color:#fff;
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow:0 4px 22px rgba(220,38,38,.45),0 1px 4px rgba(0,0,0,.25),
+    inset 0 1.5px 0 rgba(255,255,255,.26),inset 0 -1px 0 rgba(0,0,0,.08)}
+.dark .danger:hover{box-shadow:0 8px 28px rgba(220,38,38,.55),0 2px 6px rgba(0,0,0,.25),
+  inset 0 1.5px 0 rgba(255,255,255,.28),inset 0 -1px 0 rgba(0,0,0,.08)}
+
+.dark .off{background:rgba(255,255,255,.06);color:rgba(255,255,255,.28);
+  border:1px solid rgba(255,255,255,.08);cursor:not-allowed;transform:none!important}
+
+/* ── Light buttons ───────────────────────────────── */
+.light .prominent{background:linear-gradient(158deg,rgba(40,40,46,.97),rgba(9,9,11,.99));color:#fff;
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 4px 14px rgba(0,0,0,.28),0 1px 3px rgba(0,0,0,.18),
+    inset 0 1.5px 0 rgba(255,255,255,.18),inset 0 -1px 0 rgba(0,0,0,.15)}
+.light .prominent:hover{background:linear-gradient(158deg,rgba(60,60,67,.97),rgba(20,20,22,.99));
+  box-shadow:0 6px 20px rgba(0,0,0,.32),0 2px 5px rgba(0,0,0,.18),
+    inset 0 1.5px 0 rgba(255,255,255,.20),inset 0 -1px 0 rgba(0,0,0,.15)}
+
+.light .accent{background:linear-gradient(158deg,rgba(167,139,250,.96),rgba(109,40,217,.99));color:#fff;
+  border:1px solid rgba(255,255,255,.30);
+  box-shadow:0 4px 20px rgba(109,40,217,.32),0 1px 4px rgba(0,0,0,.14),
+    inset 0 1.5px 0 rgba(255,255,255,.38),inset 0 -1px 0 rgba(0,0,0,.06)}
+.light .accent:hover{box-shadow:0 6px 28px rgba(109,40,217,.42),0 2px 6px rgba(0,0,0,.14),
+  inset 0 1.5px 0 rgba(255,255,255,.40),inset 0 -1px 0 rgba(0,0,0,.06)}
+
+.light .subtle{background:rgba(255,255,255,.62);color:rgba(9,9,11,.88);
+  border:1px solid rgba(255,255,255,.85);
+  backdrop-filter:blur(16px) saturate(1.8);-webkit-backdrop-filter:blur(16px) saturate(1.8);
+  box-shadow:0 2px 10px rgba(0,0,0,.08),inset 0 1.5px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(0,0,0,.04)}
+.light .subtle:hover{background:rgba(255,255,255,.78)}
+
+.light .ghost{background:rgba(255,255,255,.40);color:rgba(9,9,11,.78);
+  border:1px solid rgba(255,255,255,.68);
+  backdrop-filter:blur(12px) saturate(1.6);-webkit-backdrop-filter:blur(12px) saturate(1.6);
+  box-shadow:0 1px 4px rgba(0,0,0,.06),inset 0 1.5px 0 rgba(255,255,255,.85),inset 0 -1px 0 rgba(0,0,0,.03)}
+.light .ghost:hover{background:rgba(255,255,255,.60)}
+
+.light .danger{background:linear-gradient(158deg,rgba(252,165,165,.92),rgba(185,28,28,.99));color:#fff;
+  border:1px solid rgba(255,255,255,.28);
+  box-shadow:0 4px 18px rgba(220,38,38,.30),0 1px 4px rgba(0,0,0,.14),
+    inset 0 1.5px 0 rgba(255,255,255,.30),inset 0 -1px 0 rgba(0,0,0,.06)}
+.light .danger:hover{box-shadow:0 6px 24px rgba(220,38,38,.38),0 2px 5px rgba(0,0,0,.14),
+  inset 0 1.5px 0 rgba(255,255,255,.32),inset 0 -1px 0 rgba(0,0,0,.06)}
+
+/* ── Card ────────────────────────────────────────── */
+.card{border-radius:1.25rem;padding:1.5rem;max-width:320px}
+.dark .card{background:rgba(255,255,255,.10);color:rgba(255,255,255,.86);
+  backdrop-filter:blur(28px) saturate(1.8);-webkit-backdrop-filter:blur(28px) saturate(1.8);
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow:0 12px 48px rgba(0,0,0,.35),0 4px 16px rgba(0,0,0,.20),
+    inset 0 1.5px 0 rgba(255,255,255,.24),inset 0 -1px 0 rgba(0,0,0,.08)}
+.light .card{background:rgba(255,255,255,.68);color:rgba(9,9,11,.84);
+  backdrop-filter:blur(28px) saturate(1.8);-webkit-backdrop-filter:blur(28px) saturate(1.8);
+  border:1px solid rgba(255,255,255,.90);
+  box-shadow:0 12px 48px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.05),
+    inset 0 1.5px 0 rgba(255,255,255,.98),inset 0 -1px 0 rgba(0,0,0,.03)}
+.card h3{font-size:1rem;font-weight:600;letter-spacing:-.01em;margin-bottom:.5rem}
+.card p{font-size:.875rem;opacity:.65;line-height:1.5;margin-bottom:1rem}
+.foot{padding-top:.875rem;display:flex;gap:.5rem;justify-content:flex-end}
+.dark .foot{border-top:1px solid rgba(255,255,255,.12)}
+.light .foot{border-top:1px solid rgba(0,0,0,.06)}
+.sm{padding:.375rem .875rem;min-height:unset;font-size:.8125rem}
+
+/* ── Input ───────────────────────────────────────── */
+.field{display:flex;flex-direction:column;gap:.4rem;min-width:240px}
+.lbl{font-size:.875rem;font-weight:500}
+.dark .lbl{color:rgba(255,255,255,.72)}.light .lbl{color:rgba(9,9,11,.70)}
+.inp{width:100%;padding:.625rem .875rem;font-size:.875rem;font-family:inherit;
+  border-radius:.625rem;outline:none;
+  transition:box-shadow .15s ease,border-color .15s ease}
+.dark .inp{background:rgba(255,255,255,.08);color:rgba(255,255,255,.88);
+  border:1px solid rgba(255,255,255,.14);
+  backdrop-filter:blur(16px) saturate(1.6);-webkit-backdrop-filter:blur(16px) saturate(1.6);
+  box-shadow:inset 0 1.5px 3px rgba(0,0,0,.15),0 1px 4px rgba(0,0,0,.15)}
+.dark .inp::placeholder{color:rgba(255,255,255,.28)}
+.dark .inp:focus{border-color:rgba(139,92,246,.65);
+  box-shadow:0 0 0 3px rgba(139,92,246,.22),inset 0 1.5px 3px rgba(0,0,0,.15)}
+.light .inp{background:rgba(255,255,255,.70);color:rgba(9,9,11,.88);
+  border:1px solid rgba(255,255,255,.90);
+  backdrop-filter:blur(16px) saturate(1.6);-webkit-backdrop-filter:blur(16px) saturate(1.6);
+  box-shadow:inset 0 1.5px 3px rgba(0,0,0,.05),0 1px 4px rgba(0,0,0,.06)}
+.light .inp::placeholder{color:rgba(9,9,11,.30)}
+.light .inp:focus{border-color:rgba(139,92,246,.55);
+  box-shadow:0 0 0 3px rgba(139,92,246,.18),inset 0 1.5px 3px rgba(0,0,0,.04)}
+
+/* ── Badge ───────────────────────────────────────── */
+.badge{display:inline-flex;align-items:center;border-radius:9999px;font-size:.8125rem;
+  font-weight:500;letter-spacing:-.01em;padding:.25rem .75rem;white-space:nowrap;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.dark .b-n{background:rgba(255,255,255,.12);color:rgba(255,255,255,.80);
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.20),0 1px 4px rgba(0,0,0,.18)}
+.dark .b-a{background:rgba(139,92,246,.22);color:#c4b5fd;border:1px solid rgba(139,92,246,.35);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 1px 4px rgba(109,40,217,.22)}
+.dark .b-s{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.28);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14)}
+.dark .b-w{background:rgba(251,191,36,.15);color:#fbbf24;border:1px solid rgba(251,191,36,.28);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14)}
+.dark .b-e{background:rgba(220,38,38,.14);color:#fca5a5;border:1px solid rgba(220,38,38,.25);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.light .b-n{background:rgba(255,255,255,.68);color:rgba(9,9,11,.72);
+  border:1px solid rgba(255,255,255,.90);
+  box-shadow:inset 0 1.5px 0 rgba(255,255,255,.98),0 1px 4px rgba(0,0,0,.07)}
+.light .b-a{background:rgba(124,58,237,.12);color:#6d28d9;border:1px solid rgba(124,58,237,.25);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.30)}
+.light .b-s{background:rgba(22,163,74,.12);color:#15803d;border:1px solid rgba(22,163,74,.22);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28)}
+.light .b-w{background:rgba(180,83,9,.10);color:#b45309;border:1px solid rgba(180,83,9,.20);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.26)}
+.light .b-e{background:rgba(185,28,28,.10);color:#b91c1c;border:1px solid rgba(185,28,28,.20);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.26)}
+</style>
+</head>
+<body>
+
+<!-- ===== DARK ===== -->
+<div class="dark">
+  <div class="tag">Dark Mode — Liquid Glass</div>
+
+  <div class="group">
+    <h2>Buttons</h2>
+    <div class="row">
+      <button class="btn prominent">Prominent</button>
+      <button class="btn accent">Accent</button>
+      <button class="btn subtle">Subtle</button>
+      <button class="btn ghost">Ghost</button>
+      <button class="btn danger">Danger</button>
+      <button class="btn off" disabled>Disabled</button>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2>Badges</h2>
+    <div class="row">
+      <span class="badge b-n">Neutral</span>
+      <span class="badge b-a">Accent</span>
+      <span class="badge b-s">Active</span>
+      <span class="badge b-w">Pending</span>
+      <span class="badge b-e">Failed</span>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2>Inputs</h2>
+    <div class="row">
+      <div class="field">
+        <label class="lbl">Email address</label>
+        <input class="inp" type="email" placeholder="name@example.com">
+      </div>
+      <div class="field">
+        <label class="lbl">Password</label>
+        <input class="inp" type="password" placeholder="••••••••">
+      </div>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2>Cards</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Usage this month</h3>
+        <p>Track API calls, token usage, and cost in real-time.</p>
+        <div class="foot">
+          <button class="btn ghost sm">Dismiss</button>
+          <button class="btn accent sm">View details</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Danger zone</h3>
+        <p>Irreversible actions that permanently affect your account.</p>
+        <div class="foot">
+          <button class="btn danger sm">Delete account</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LIGHT ===== -->
+<div class="light">
+  <div class="tag">Light Mode — Liquid Glass</div>
+
+  <div class="group">
+    <h2>Buttons</h2>
+    <div class="row">
+      <button class="btn prominent">Prominent</button>
+      <button class="btn accent">Accent</button>
+      <button class="btn subtle">Subtle</button>
+      <button class="btn ghost">Ghost</button>
+      <button class="btn danger">Danger</button>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2>Badges</h2>
+    <div class="row">
+      <span class="badge b-n">Neutral</span>
+      <span class="badge b-a">Accent</span>
+      <span class="badge b-s">Active</span>
+      <span class="badge b-w">Pending</span>
+      <span class="badge b-e">Failed</span>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2>Inputs</h2>
+    <div class="row">
+      <div class="field">
+        <label class="lbl">Email address</label>
+        <input class="inp" type="email" placeholder="name@example.com">
+      </div>
+      <div class="field">
+        <label class="lbl">Password</label>
+        <input class="inp" type="password" placeholder="••••••••">
+      </div>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2>Cards</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Account settings</h3>
+        <p>Manage your profile, preferences, and security settings.</p>
+        <div class="foot">
+          <button class="btn subtle sm">Cancel</button>
+          <button class="btn prominent sm">Save changes</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Pro plan</h3>
+        <p>14 days remaining in your trial. Upgrade any time.</p>
+        <div class="foot">
+          <button class="btn accent sm">Upgrade now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
