@@ -68,12 +68,34 @@ export class DsButton extends BaseElement {
         line-height: var(--ds-line-height-tight);
         text-decoration: none;
         white-space: nowrap;
+        position: relative;
+        overflow: hidden;
+        isolation: isolate;
+        /* All variants share the same glass backdrop — tint varies per variant */
+        -webkit-backdrop-filter: url(#ds-glass) blur(12px) saturate(1.6);
+        backdrop-filter: url(#ds-glass) blur(12px) saturate(1.6);
         transition:
           background-color var(--ds-duration-fast) var(--ds-easing-default),
           border-color var(--ds-duration-fast) var(--ds-easing-default),
           box-shadow var(--ds-duration-fast) var(--ds-easing-default),
           color var(--ds-duration-fast) var(--ds-easing-default),
           transform 120ms cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      /* Specular top-rim highlight — sits between backdrop and text via z-index:-1 inside isolation */
+      button::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        z-index: -1;
+        background: linear-gradient(
+          175deg,
+          rgba(255, 255, 255, 0.48) 0%,
+          rgba(255, 255, 255, 0.16) 22%,
+          rgba(255, 255, 255, 0.00) 52%
+        );
+        pointer-events: none;
       }
 
       button:not(:disabled):hover  { transform: translateY(-1.5px); }
@@ -84,111 +106,97 @@ export class DsButton extends BaseElement {
       :host(:not([size])) button,
       :host([size='medium']) button { font-size: var(--ds-text-sm); padding: var(--ds-space-2) var(--ds-space-4);  min-height: 2.75rem; }
 
-      /* prominent (default) — polished glass-solid */
+      /* prominent — dark-tinted glass (auto-inverts to light tint in dark mode via token) */
       :host(:not([variant])) button,
       :host([variant='prominent']) button {
-        background: linear-gradient(158deg,
-          color-mix(in srgb, var(--ds-color-action-prominent) 82%, white) 0%,
-          var(--ds-color-action-prominent) 68%);
+        background: color-mix(in srgb, var(--ds-color-action-prominent) 82%, transparent);
         color: var(--ds-color-action-prominent-fg);
-        border-color: rgba(255, 255, 255, 0.14);
+        border-color: rgba(255, 255, 255, 0.18);
         box-shadow:
-          inset 0 1.5px 0 rgba(255, 255, 255, 0.45),
-          inset 0 -1px 0 rgba(0, 0, 0, 0.28),
-          0 5px 18px rgba(0, 0, 0, 0.35),
-          0 2px 5px rgba(0, 0, 0, 0.20);
+          inset 0 1px 0 rgba(255, 255, 255, 0.40),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.22),
+          0 6px 24px rgba(0, 0, 0, 0.30),
+          0 2px 6px rgba(0, 0, 0, 0.18);
       }
       :host(:not([variant])) button:hover:not(:disabled),
       :host([variant='prominent']) button:hover:not(:disabled) {
-        background: linear-gradient(158deg,
-          color-mix(in srgb, var(--ds-color-action-prominent-hover) 82%, white) 0%,
-          var(--ds-color-action-prominent-hover) 68%);
+        background: color-mix(in srgb, var(--ds-color-action-prominent-hover) 86%, transparent);
         box-shadow:
-          inset 0 1.5px 0 rgba(255, 255, 255, 0.48),
-          inset 0 -1px 0 rgba(0, 0, 0, 0.28),
-          0 8px 24px rgba(0, 0, 0, 0.40),
-          0 2px 6px rgba(0, 0, 0, 0.22);
+          inset 0 1px 0 rgba(255, 255, 255, 0.44),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.22),
+          0 10px 32px rgba(0, 0, 0, 0.38),
+          0 3px 8px rgba(0, 0, 0, 0.20);
       }
 
-      /* accent — polished violet glass-solid */
+      /* accent — violet-tinted glass */
       :host([variant='accent']) button {
-        background: linear-gradient(158deg,
-          color-mix(in srgb, var(--ds-color-action-accent) 78%, white) 0%,
-          var(--ds-color-action-accent) 68%);
+        background: color-mix(in srgb, var(--ds-color-action-accent) 72%, transparent);
         color: var(--ds-color-text-on-action);
-        border-color: rgba(255, 255, 255, 0.24);
+        border-color: rgba(255, 255, 255, 0.28);
         box-shadow:
-          inset 0 1.5px 0 rgba(255, 255, 255, 0.55),
-          inset 0 -1px 0 rgba(0, 0, 0, 0.10),
-          0 5px 24px color-mix(in srgb, var(--ds-color-action-accent) 55%, transparent),
-          0 2px 5px rgba(0, 0, 0, 0.18);
-      }
-      :host([variant='accent']) button:hover:not(:disabled) {
-        box-shadow:
-          inset 0 1.5px 0 rgba(255, 255, 255, 0.55),
-          inset 0 -1px 0 rgba(0, 0, 0, 0.10),
-          0 8px 28px color-mix(in srgb, var(--ds-color-action-accent) 65%, transparent),
+          inset 0 1px 0 rgba(255, 255, 255, 0.45),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+          0 6px 28px color-mix(in srgb, var(--ds-color-action-accent) 55%, transparent),
           0 2px 6px rgba(0, 0, 0, 0.18);
       }
+      :host([variant='accent']) button:hover:not(:disabled) {
+        background: color-mix(in srgb, var(--ds-color-action-accent-hover) 76%, transparent);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.48),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+          0 10px 36px color-mix(in srgb, var(--ds-color-action-accent) 65%, transparent),
+          0 3px 8px rgba(0, 0, 0, 0.18);
+      }
 
-      /* subtle — frosted optical glass */
+      /* subtle — lightly tinted glass */
       :host([variant='subtle']) button {
-        -webkit-backdrop-filter: url(#ds-glass) blur(0.4px) contrast(1.12);
-        backdrop-filter: url(#ds-glass) blur(0.4px) contrast(1.12);
         background: var(--ds-glass-surface-bg);
         color: var(--ds-color-action-prominent);
         border-color: var(--ds-glass-surface-border);
         box-shadow:
-          inset 0 1.5px 0 var(--ds-glass-surface-spec),
-          inset 0 -1px 0 rgba(0, 0, 0, 0.18),
-          0 4px 16px rgba(0, 0, 0, 0.18);
+          inset 0 1px 0 var(--ds-glass-surface-spec),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.10);
       }
       :host([variant='subtle']) button:hover:not(:disabled) {
-        background: color-mix(in srgb, var(--ds-glass-surface-bg) 100%, rgba(255,255,255,0.08));
+        background: color-mix(in srgb, var(--ds-glass-surface-bg) 120%, rgba(255,255,255,0.12));
       }
 
-      /* ghost — lighter optical glass */
+      /* ghost — near-transparent glass */
       :host([variant='ghost']) button {
-        -webkit-backdrop-filter: url(#ds-glass) blur(0.4px) contrast(1.12);
-        backdrop-filter: url(#ds-glass) blur(0.4px) contrast(1.12);
         background: var(--ds-glass-ghost-bg);
         color: var(--ds-color-text-primary);
         border-color: var(--ds-glass-ghost-border);
         box-shadow:
-          inset 0 1.5px 0 rgba(255, 255, 255, 0.45),
-          inset 0 -1px 0 rgba(0, 0, 0, 0.12),
-          0 2px 8px rgba(0, 0, 0, 0.10);
+          inset 0 1px 0 rgba(255, 255, 255, 0.40),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.06);
       }
       :host([variant='ghost']) button:hover:not(:disabled) {
         background: var(--ds-glass-surface-bg);
       }
 
-      /* danger — polished red glass-solid */
+      /* danger — red-tinted glass */
       :host([variant='danger']) button {
-        background: linear-gradient(158deg,
-          color-mix(in srgb, var(--ds-color-action-danger) 80%, white) 0%,
-          var(--ds-color-action-danger) 68%);
+        background: color-mix(in srgb, var(--ds-color-action-danger) 72%, transparent);
         color: var(--ds-color-text-on-action);
-        border-color: rgba(255, 255, 255, 0.20);
+        border-color: rgba(255, 255, 255, 0.22);
         box-shadow:
-          inset 0 1.5px 0 rgba(255, 255, 255, 0.50),
-          inset 0 -1px 0 rgba(0, 0, 0, 0.10),
-          0 5px 20px color-mix(in srgb, var(--ds-color-action-danger) 50%, transparent),
-          0 2px 5px rgba(0, 0, 0, 0.18);
+          inset 0 1px 0 rgba(255, 255, 255, 0.42),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+          0 6px 24px color-mix(in srgb, var(--ds-color-action-danger) 50%, transparent),
+          0 2px 6px rgba(0, 0, 0, 0.18);
       }
       :host([variant='danger']) button:hover:not(:disabled) {
+        background: color-mix(in srgb, var(--ds-color-action-danger-hover) 76%, transparent);
         box-shadow:
-          inset 0 1.5px 0 rgba(255, 255, 255, 0.50),
-          inset 0 -1px 0 rgba(0, 0, 0, 0.10),
-          0 8px 24px color-mix(in srgb, var(--ds-color-action-danger) 62%, transparent),
-          0 2px 6px rgba(0, 0, 0, 0.18);
+          inset 0 1px 0 rgba(255, 255, 255, 0.42),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+          0 10px 32px color-mix(in srgb, var(--ds-color-action-danger) 62%, transparent),
+          0 3px 8px rgba(0, 0, 0, 0.18);
       }
 
       button:disabled {
-        opacity: 0.45;
+        opacity: 0.40;
         cursor: not-allowed;
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
       }
 
       .spinner {
