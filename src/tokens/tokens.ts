@@ -114,6 +114,18 @@ const TOKEN_CSS = `
   --ds-focus-ring-width:  2px;
   --ds-focus-ring-offset: 2px;
   --ds-focus-ring-color:  var(--ds-color-border-focus);
+
+  /* ── Glass surfaces (light mode) ─────────────────────── */
+  --ds-glass-surface-bg:     rgba(255, 255, 255, 0.52);
+  --ds-glass-surface-border: rgba(255, 255, 255, 0.82);
+  --ds-glass-surface-spec:   rgba(255, 255, 255, 0.96);
+  --ds-glass-ghost-bg:       rgba(255, 255, 255, 0.38);
+  --ds-glass-ghost-border:   rgba(255, 255, 255, 0.70);
+  --ds-card-glass-bg:        rgba(255, 255, 255, 0.48);
+  --ds-card-glass-border:    rgba(255, 255, 255, 0.82);
+  --ds-card-glass-spec:      rgba(255, 255, 255, 0.96);
+  --ds-input-glass-bg:       rgba(255, 255, 255, 0.58);
+  --ds-input-glass-border:   rgba(255, 255, 255, 0.84);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -133,6 +145,16 @@ const TOKEN_CSS = `
     --ds-color-action-prominent-fg:     var(--ds-p-zinc-950);
     --ds-color-action-accent-subtle:    #2e1065;
     --ds-color-action-danger-subtle:    #3b1010;
+    --ds-glass-surface-bg:     rgba(255, 255, 255, 0.10);
+    --ds-glass-surface-border: rgba(255, 255, 255, 0.22);
+    --ds-glass-surface-spec:   rgba(255, 255, 255, 0.55);
+    --ds-glass-ghost-bg:       rgba(255, 255, 255, 0.06);
+    --ds-glass-ghost-border:   rgba(255, 255, 255, 0.18);
+    --ds-card-glass-bg:        rgba(255, 255, 255, 0.07);
+    --ds-card-glass-border:    rgba(255, 255, 255, 0.22);
+    --ds-card-glass-spec:      rgba(255, 255, 255, 0.55);
+    --ds-input-glass-bg:       rgba(255, 255, 255, 0.07);
+    --ds-input-glass-border:   rgba(255, 255, 255, 0.16);
   }
 }
 
@@ -152,8 +174,80 @@ const TOKEN_CSS = `
   --ds-color-action-prominent-fg:     var(--ds-p-zinc-950);
   --ds-color-action-accent-subtle:    #2e1065;
   --ds-color-action-danger-subtle:    #3b1010;
+  --ds-glass-surface-bg:     rgba(255, 255, 255, 0.10);
+  --ds-glass-surface-border: rgba(255, 255, 255, 0.22);
+  --ds-glass-surface-spec:   rgba(255, 255, 255, 0.55);
+  --ds-glass-ghost-bg:       rgba(255, 255, 255, 0.06);
+  --ds-glass-ghost-border:   rgba(255, 255, 255, 0.18);
+  --ds-card-glass-bg:        rgba(255, 255, 255, 0.07);
+  --ds-card-glass-border:    rgba(255, 255, 255, 0.22);
+  --ds-card-glass-spec:      rgba(255, 255, 255, 0.55);
+  --ds-input-glass-bg:       rgba(255, 255, 255, 0.07);
+  --ds-input-glass-border:   rgba(255, 255, 255, 0.16);
 }
 `;
+
+function buildDisplacementMap(res: number): string {
+  const canvas = document.createElement('canvas');
+  canvas.width = res;
+  canvas.height = res;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return '';
+  const img = ctx.createImageData(res, res);
+  const px = img.data;
+  for (let y = 0; y < res; y++) {
+    for (let x = 0; x < res; x++) {
+      const nx = (x / (res - 1)) * 2 - 1;
+      const ny = (y / (res - 1)) * 2 - 1;
+      const r = Math.sqrt(nx * nx + ny * ny);
+      const t = Math.min(r, 1.0);
+      const w = Math.pow(t, 1.6);
+      const len = r > 0.001 ? r : 0.001;
+      const dx = (nx / len) * w;
+      const dy = (ny / len) * w;
+      const i = (y * res + x) * 4;
+      px[i]     = Math.max(0, Math.min(255, Math.round(128 + dx * 127)));
+      px[i + 1] = Math.max(0, Math.min(255, Math.round(128 + dy * 127)));
+      px[i + 2] = 0;
+      px[i + 3] = 255;
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+  return canvas.toDataURL();
+}
+
+function injectGlassFilter(): void {
+  if (typeof document === 'undefined') return;
+  if (document.getElementById('ds-glass')) return;
+  const dmapUrl = buildDisplacementMap(256);
+  if (!dmapUrl) return;
+  const ns = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('style', 'position:absolute;width:0;height:0;overflow:hidden');
+  svg.setAttribute('aria-hidden', 'true');
+  const defs = document.createElementNS(ns, 'defs');
+  const filter = document.createElementNS(ns, 'filter');
+  filter.setAttribute('id', 'ds-glass');
+  filter.setAttribute('x', '-28%');
+  filter.setAttribute('y', '-28%');
+  filter.setAttribute('width', '156%');
+  filter.setAttribute('height', '156%');
+  filter.setAttribute('color-interpolation-filters', 'sRGB');
+  const feImage = document.createElementNS(ns, 'feImage');
+  feImage.setAttribute('result', 'dmap');
+  feImage.setAttribute('preserveAspectRatio', 'none');
+  feImage.setAttribute('href', dmapUrl);
+  const feDisp = document.createElementNS(ns, 'feDisplacementMap');
+  feDisp.setAttribute('in', 'SourceGraphic');
+  feDisp.setAttribute('in2', 'dmap');
+  feDisp.setAttribute('scale', '55');
+  feDisp.setAttribute('xChannelSelector', 'R');
+  feDisp.setAttribute('yChannelSelector', 'G');
+  filter.append(feImage, feDisp);
+  defs.appendChild(filter);
+  svg.appendChild(defs);
+  (document.body ?? document.head ?? document.documentElement).appendChild(svg);
+}
 
 function injectTokens(): void {
   if (typeof document === 'undefined') return;
@@ -170,3 +264,4 @@ function injectTokens(): void {
 }
 
 injectTokens();
+injectGlassFilter();

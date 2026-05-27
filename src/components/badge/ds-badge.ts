@@ -53,6 +53,12 @@ export class DsBadge extends BaseElement {
         font-weight: var(--ds-font-weight-medium);
         line-height: var(--ds-line-height-tight);
         white-space: nowrap;
+        -webkit-backdrop-filter: url(#ds-glass) blur(0.4px) contrast(1.10);
+        backdrop-filter: url(#ds-glass) blur(0.4px) contrast(1.10);
+        box-shadow:
+          inset 0 1.5px 0 rgba(255, 255, 255, 0.50),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+          0 1px 4px rgba(0, 0, 0, 0.10);
       }
 
       :host([size='sm']) span { font-size: var(--ds-text-xs); padding: 0.125rem var(--ds-space-2); }
@@ -61,39 +67,45 @@ export class DsBadge extends BaseElement {
 
       :host(:not([variant])) span,
       :host([variant='neutral']) span {
-        background: var(--ds-color-surface-subtle);
+        background: var(--ds-glass-ghost-bg);
         color: var(--ds-color-text-secondary);
-        border: 1px solid var(--ds-color-border-default);
+        border: 1px solid var(--ds-glass-ghost-border);
       }
 
       :host([variant='prominent']) span {
         background: var(--ds-color-action-prominent-subtle);
         color: var(--ds-color-action-prominent);
+        border: 1px solid color-mix(in srgb, var(--ds-color-action-prominent) 15%, transparent);
       }
 
       :host([variant='accent']) span {
         background: var(--ds-color-action-accent-subtle);
         color: var(--ds-color-action-accent);
+        border: 1px solid color-mix(in srgb, var(--ds-color-action-accent) 22%, transparent);
       }
 
       :host([variant='success']) span {
-        background: #f0fdf4;
+        background: rgba(34, 197, 94, 0.12);
         color: #15803d;
+        border: 1px solid rgba(34, 197, 94, 0.22);
       }
 
       :host([variant='warning']) span {
-        background: #fffbeb;
+        background: rgba(180, 83, 9, 0.10);
         color: #b45309;
+        border: 1px solid rgba(180, 83, 9, 0.20);
       }
 
       :host([variant='error']) span {
-        background: var(--ds-color-action-danger-subtle);
+        background: rgba(185, 28, 28, 0.10);
         color: #b91c1c;
+        border: 1px solid rgba(185, 28, 28, 0.20);
       }
 
       :host([variant='decorative']) span {
-        background: var(--ds-color-surface-subtle);
+        background: var(--ds-glass-ghost-bg);
         color: var(--ds-color-text-disabled);
+        border: 1px solid var(--ds-glass-ghost-border);
       }
     `,
   ];
