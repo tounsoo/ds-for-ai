@@ -89,11 +89,10 @@ export class DsButton extends BaseElement {
         inset: 0;
         border-radius: inherit;
         z-index: -1;
-        background: linear-gradient(
-          175deg,
-          rgba(255, 255, 255, 0.48) 0%,
-          rgba(255, 255, 255, 0.16) 22%,
-          rgba(255, 255, 255, 0.00) 52%
+        background: radial-gradient(ellipse 80% 45% at 50% -5%,
+          rgba(255, 255, 255, 0.70) 0%,
+          rgba(255, 255, 255, 0.25) 45%,
+          transparent 100%
         );
         pointer-events: none;
       }
@@ -109,20 +108,20 @@ export class DsButton extends BaseElement {
       /* prominent — dark-tinted glass (auto-inverts to light tint in dark mode via token) */
       :host(:not([variant])) button,
       :host([variant='prominent']) button {
-        background: color-mix(in srgb, var(--ds-color-action-prominent) 82%, transparent);
+        background: color-mix(in srgb, var(--ds-color-action-prominent) 60%, transparent);
         color: var(--ds-color-action-prominent-fg);
-        border-color: rgba(255, 255, 255, 0.18);
+        border-color: rgba(255, 255, 255, 0.65);
         box-shadow:
-          inset 0 1px 0 rgba(255, 255, 255, 0.40),
+          inset 0 1px 0 rgba(255, 255, 255, 0.75),
           inset 0 -1px 0 rgba(0, 0, 0, 0.22),
           0 6px 24px rgba(0, 0, 0, 0.30),
           0 2px 6px rgba(0, 0, 0, 0.18);
       }
       :host(:not([variant])) button:hover:not(:disabled),
       :host([variant='prominent']) button:hover:not(:disabled) {
-        background: color-mix(in srgb, var(--ds-color-action-prominent-hover) 86%, transparent);
+        background: color-mix(in srgb, var(--ds-color-action-prominent-hover) 64%, transparent);
         box-shadow:
-          inset 0 1px 0 rgba(255, 255, 255, 0.44),
+          inset 0 1px 0 rgba(255, 255, 255, 0.80),
           inset 0 -1px 0 rgba(0, 0, 0, 0.22),
           0 10px 32px rgba(0, 0, 0, 0.38),
           0 3px 8px rgba(0, 0, 0, 0.20);
@@ -130,19 +129,19 @@ export class DsButton extends BaseElement {
 
       /* accent — violet-tinted glass */
       :host([variant='accent']) button {
-        background: color-mix(in srgb, var(--ds-color-action-accent) 72%, transparent);
+        background: color-mix(in srgb, var(--ds-color-action-accent) 58%, transparent);
         color: var(--ds-color-text-on-action);
-        border-color: rgba(255, 255, 255, 0.28);
+        border-color: rgba(255, 255, 255, 0.65);
         box-shadow:
-          inset 0 1px 0 rgba(255, 255, 255, 0.45),
+          inset 0 1px 0 rgba(255, 255, 255, 0.75),
           inset 0 -1px 0 rgba(0, 0, 0, 0.08),
           0 6px 28px color-mix(in srgb, var(--ds-color-action-accent) 55%, transparent),
           0 2px 6px rgba(0, 0, 0, 0.18);
       }
       :host([variant='accent']) button:hover:not(:disabled) {
-        background: color-mix(in srgb, var(--ds-color-action-accent-hover) 76%, transparent);
+        background: color-mix(in srgb, var(--ds-color-action-accent-hover) 62%, transparent);
         box-shadow:
-          inset 0 1px 0 rgba(255, 255, 255, 0.48),
+          inset 0 1px 0 rgba(255, 255, 255, 0.80),
           inset 0 -1px 0 rgba(0, 0, 0, 0.08),
           0 10px 36px color-mix(in srgb, var(--ds-color-action-accent) 65%, transparent),
           0 3px 8px rgba(0, 0, 0, 0.18);
@@ -167,7 +166,7 @@ export class DsButton extends BaseElement {
         color: var(--ds-color-text-primary);
         border-color: var(--ds-glass-ghost-border);
         box-shadow:
-          inset 0 1px 0 rgba(255, 255, 255, 0.40),
+          inset 0 1px 0 rgba(255, 255, 255, 0.70),
           inset 0 -1px 0 rgba(0, 0, 0, 0.06);
       }
       :host([variant='ghost']) button:hover:not(:disabled) {
@@ -176,19 +175,19 @@ export class DsButton extends BaseElement {
 
       /* danger — red-tinted glass */
       :host([variant='danger']) button {
-        background: color-mix(in srgb, var(--ds-color-action-danger) 72%, transparent);
+        background: color-mix(in srgb, var(--ds-color-action-danger) 58%, transparent);
         color: var(--ds-color-text-on-action);
-        border-color: rgba(255, 255, 255, 0.22);
+        border-color: rgba(255, 255, 255, 0.62);
         box-shadow:
-          inset 0 1px 0 rgba(255, 255, 255, 0.42),
+          inset 0 1px 0 rgba(255, 255, 255, 0.75),
           inset 0 -1px 0 rgba(0, 0, 0, 0.08),
           0 6px 24px color-mix(in srgb, var(--ds-color-action-danger) 50%, transparent),
           0 2px 6px rgba(0, 0, 0, 0.18);
       }
       :host([variant='danger']) button:hover:not(:disabled) {
-        background: color-mix(in srgb, var(--ds-color-action-danger-hover) 76%, transparent);
+        background: color-mix(in srgb, var(--ds-color-action-danger-hover) 62%, transparent);
         box-shadow:
-          inset 0 1px 0 rgba(255, 255, 255, 0.42),
+          inset 0 1px 0 rgba(255, 255, 255, 0.78),
           inset 0 -1px 0 rgba(0, 0, 0, 0.08),
           0 10px 32px color-mix(in srgb, var(--ds-color-action-danger) 62%, transparent),
           0 3px 8px rgba(0, 0, 0, 0.18);

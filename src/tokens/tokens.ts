@@ -191,7 +191,8 @@ function buildDisplacementMap(res: number): string {
   const canvas = document.createElement('canvas');
   canvas.width = res;
   canvas.height = res;
-  const ctx = canvas.getContext('2d');
+  let ctx: CanvasRenderingContext2D | null;
+  try { ctx = canvas.getContext('2d'); } catch { return ''; }
   if (!ctx) return '';
   const img = ctx.createImageData(res, res);
   const px = img.data;
@@ -228,22 +229,73 @@ function injectGlassFilter(): void {
   const defs = document.createElementNS(ns, 'defs');
   const filter = document.createElementNS(ns, 'filter');
   filter.setAttribute('id', 'ds-glass');
-  filter.setAttribute('x', '-28%');
-  filter.setAttribute('y', '-28%');
-  filter.setAttribute('width', '156%');
-  filter.setAttribute('height', '156%');
+  filter.setAttribute('x', '-50%');
+  filter.setAttribute('y', '-50%');
+  filter.setAttribute('width', '200%');
+  filter.setAttribute('height', '200%');
   filter.setAttribute('color-interpolation-filters', 'sRGB');
+
   const feImage = document.createElementNS(ns, 'feImage');
   feImage.setAttribute('result', 'dmap');
   feImage.setAttribute('preserveAspectRatio', 'none');
   feImage.setAttribute('href', dmapUrl);
-  const feDisp = document.createElementNS(ns, 'feDisplacementMap');
-  feDisp.setAttribute('in', 'SourceGraphic');
-  feDisp.setAttribute('in2', 'dmap');
-  feDisp.setAttribute('scale', '55');
-  feDisp.setAttribute('xChannelSelector', 'R');
-  feDisp.setAttribute('yChannelSelector', 'G');
-  filter.append(feImage, feDisp);
+
+  // Chromatic aberration — isolate R, G, B and displace each by a different amount
+  // so edges exhibit a prismatic colour-split matching Apple Liquid Glass
+  const srcR = document.createElementNS(ns, 'feColorMatrix');
+  srcR.setAttribute('type', 'matrix');
+  srcR.setAttribute('values', '1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0');
+  srcR.setAttribute('in', 'SourceGraphic');
+  srcR.setAttribute('result', 'src-r');
+
+  const srcG = document.createElementNS(ns, 'feColorMatrix');
+  srcG.setAttribute('type', 'matrix');
+  srcG.setAttribute('values', '0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0');
+  srcG.setAttribute('in', 'SourceGraphic');
+  srcG.setAttribute('result', 'src-g');
+
+  const srcB = document.createElementNS(ns, 'feColorMatrix');
+  srcB.setAttribute('type', 'matrix');
+  srcB.setAttribute('values', '0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0');
+  srcB.setAttribute('in', 'SourceGraphic');
+  srcB.setAttribute('result', 'src-b');
+
+  const dispR = document.createElementNS(ns, 'feDisplacementMap');
+  dispR.setAttribute('in', 'src-r');
+  dispR.setAttribute('in2', 'dmap');
+  dispR.setAttribute('scale', '78');
+  dispR.setAttribute('xChannelSelector', 'R');
+  dispR.setAttribute('yChannelSelector', 'G');
+  dispR.setAttribute('result', 'disp-r');
+
+  const dispG = document.createElementNS(ns, 'feDisplacementMap');
+  dispG.setAttribute('in', 'src-g');
+  dispG.setAttribute('in2', 'dmap');
+  dispG.setAttribute('scale', '65');
+  dispG.setAttribute('xChannelSelector', 'R');
+  dispG.setAttribute('yChannelSelector', 'G');
+  dispG.setAttribute('result', 'disp-g');
+
+  const dispB = document.createElementNS(ns, 'feDisplacementMap');
+  dispB.setAttribute('in', 'src-b');
+  dispB.setAttribute('in2', 'dmap');
+  dispB.setAttribute('scale', '52');
+  dispB.setAttribute('xChannelSelector', 'R');
+  dispB.setAttribute('yChannelSelector', 'G');
+  dispB.setAttribute('result', 'disp-b');
+
+  const blendRG = document.createElementNS(ns, 'feBlend');
+  blendRG.setAttribute('in', 'disp-r');
+  blendRG.setAttribute('in2', 'disp-g');
+  blendRG.setAttribute('mode', 'screen');
+  blendRG.setAttribute('result', 'rg');
+
+  const blendRGB = document.createElementNS(ns, 'feBlend');
+  blendRGB.setAttribute('in', 'rg');
+  blendRGB.setAttribute('in2', 'disp-b');
+  blendRGB.setAttribute('mode', 'screen');
+
+  filter.append(feImage, srcR, srcG, srcB, dispR, dispG, dispB, blendRG, blendRGB);
   defs.appendChild(filter);
   svg.appendChild(defs);
   (document.body ?? document.head ?? document.documentElement).appendChild(svg);
