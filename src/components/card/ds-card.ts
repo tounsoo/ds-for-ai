@@ -50,22 +50,36 @@ export class DsCard extends BaseElement {
       }
 
       article {
-        background: var(--ds-color-surface-default);
-        border-radius: var(--ds-radius-lg);
+        border-radius: var(--ds-radius-xl);
         overflow: hidden;
+        -webkit-backdrop-filter: url(#ds-glass) blur(0.6px) contrast(1.08);
+        backdrop-filter: url(#ds-glass) blur(0.6px) contrast(1.08);
+        background: var(--ds-card-glass-bg);
+        border: 1px solid var(--ds-card-glass-border);
+        box-shadow:
+          inset 0 1.5px 0 var(--ds-card-glass-spec),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.12),
+          0 12px 40px rgba(0, 0, 0, 0.18),
+          0 4px 14px rgba(0, 0, 0, 0.10);
       }
 
       :host([variant='elevated']) article,
       :host(:not([variant])) article {
-        box-shadow: var(--ds-shadow-md);
+        box-shadow:
+          inset 0 1.5px 0 var(--ds-card-glass-spec),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.12),
+          0 16px 48px rgba(0, 0, 0, 0.22),
+          0 4px 16px rgba(0, 0, 0, 0.12);
       }
 
       :host([variant='outlined']) article {
-        border: 1.5px solid var(--ds-color-border-default);
+        border: 1.5px solid var(--ds-card-glass-border);
+        box-shadow: inset 0 1.5px 0 var(--ds-card-glass-spec);
       }
 
       :host([variant='flat']) article {
-        background: var(--ds-color-surface-subtle);
+        background: color-mix(in srgb, var(--ds-card-glass-bg) 70%, transparent);
+        box-shadow: none;
       }
 
       .body {
@@ -95,7 +109,7 @@ export class DsCard extends BaseElement {
         align-items: center;
         justify-content: flex-end;
         padding: var(--ds-space-3) var(--ds-space-5);
-        border-top: 1px solid var(--ds-color-border-default);
+        border-top: 1px solid color-mix(in srgb, currentColor 10%, transparent);
       }
 
       .footer:empty {

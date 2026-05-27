@@ -1,206 +1,368 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Liquid Glass Preview — @tounsoo/ds4ai</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Liquid Glass Preview v2 — Optical Refraction</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
 
-.dark{padding:3rem 4rem;min-height:100vh;background:
-  radial-gradient(ellipse 80% 80% at 10% 20%,rgba(124,58,237,.55) 0%,transparent 55%),
-  radial-gradient(ellipse 70% 70% at 85% 80%,rgba(14,165,233,.45) 0%,transparent 50%),
-  radial-gradient(ellipse 60% 60% at 60% 28%,rgba(236,72,153,.35) 0%,transparent 45%),
-  radial-gradient(ellipse 90% 90% at 40% 92%,rgba(16,185,129,.22) 0%,transparent 50%),#0a0a14}
-.light{padding:3rem 4rem;min-height:100vh;background:
-  radial-gradient(ellipse 70% 70% at 15% 22%,rgba(167,139,250,.32) 0%,transparent 55%),
-  radial-gradient(ellipse 60% 60% at 85% 78%,rgba(125,211,252,.38) 0%,transparent 50%),
-  radial-gradient(ellipse 55% 55% at 55% 35%,rgba(249,168,212,.28) 0%,transparent 45%),#f5f2ff}
+.scene{padding:3rem 4rem;min-height:50vh}
 
-.tag{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:2.5rem}
-.dark .tag{color:rgba(255,255,255,.35)}.light .tag{color:rgba(0,0,0,.3)}
-h2{font-size:1.1rem;font-weight:600;letter-spacing:-.02em;margin-bottom:1rem}
-.dark h2{color:rgba(255,255,255,.88)}.light h2{color:rgba(9,9,11,.82)}
-.group{margin-bottom:3rem}.row{display:flex;gap:.75rem;align-items:center;flex-wrap:wrap}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}
+/* Very saturated gradient blobs — crucial for visible refraction */
+.dark{
+  background:
+    radial-gradient(ellipse 52% 52% at 10% 18%, #7c3aed 0%,transparent 55%),
+    radial-gradient(ellipse 46% 46% at 82% 70%, #0ea5e9 0%,transparent 55%),
+    radial-gradient(ellipse 40% 40% at 52% 30%, #ec4899 0%,transparent 50%),
+    radial-gradient(ellipse 48% 48% at 30% 88%, #10b981 0%,transparent 55%),
+    radial-gradient(ellipse 35% 35% at 68% 50%, #f59e0b 0%,transparent 50%),
+    #080812;
+}
+.light{
+  background:
+    radial-gradient(ellipse 50% 50% at 12% 18%, rgba(139,92,246,.85) 0%,transparent 55%),
+    radial-gradient(ellipse 44% 44% at 82% 72%, rgba(14,165,233,.80) 0%,transparent 55%),
+    radial-gradient(ellipse 38% 38% at 52% 32%, rgba(236,72,153,.75) 0%,transparent 50%),
+    radial-gradient(ellipse 46% 46% at 30% 88%, rgba(16,185,129,.70) 0%,transparent 55%),
+    radial-gradient(ellipse 33% 33% at 68% 52%, rgba(245,158,11,.65) 0%,transparent 50%),
+    #f0ebff;
+}
 
-/* ── Button base ─────────────────────────────────── */
-.btn{display:inline-flex;align-items:center;justify-content:center;padding:.625rem 1.25rem;
-  min-height:2.625rem;border-radius:.75rem;font-family:inherit;font-size:.875rem;font-weight:500;
-  letter-spacing:-.01em;white-space:nowrap;cursor:pointer;border:none;outline:none;
-  transition:transform .1s ease,box-shadow .15s ease,background .15s ease}
-.btn:hover{transform:translateY(-1px)}.btn:active{transform:translateY(0)}
+.section-label{
+  font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2rem
+}
+.dark .section-label{color:rgba(255,255,255,.35)}
+.light .section-label{color:rgba(0,0,0,.28)}
+h2{font-size:.95rem;font-weight:600;margin-bottom:.875rem}
+.dark h2{color:rgba(255,255,255,.82)}
+.light h2{color:rgba(0,0,0,.72)}
+.group{margin-bottom:2.75rem}
+.row{display:flex;gap:.75rem;align-items:center;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem;max-width:680px}
 
-/* ── Dark buttons ────────────────────────────────── */
-.dark .prominent{background:linear-gradient(158deg,rgba(55,55,62,.97),rgba(9,9,11,.99));color:#fff;
-  border:1px solid rgba(255,255,255,.14);
-  box-shadow:0 4px 16px rgba(0,0,0,.45),0 1px 3px rgba(0,0,0,.35),
-    inset 0 1.5px 0 rgba(255,255,255,.20),inset 0 -1px 0 rgba(0,0,0,.18)}
-.dark .prominent:hover{background:linear-gradient(158deg,rgba(70,70,78,.97),rgba(20,20,22,.99));
-  box-shadow:0 8px 24px rgba(0,0,0,.5),0 2px 6px rgba(0,0,0,.35),
-    inset 0 1.5px 0 rgba(255,255,255,.22),inset 0 -1px 0 rgba(0,0,0,.18)}
+/* ─── Buttons ─── */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:.6rem 1.375rem;min-height:2.625rem;
+  border-radius:.75rem;
+  font-family:inherit;font-size:.875rem;font-weight:500;letter-spacing:-.01em;
+  white-space:nowrap;cursor:pointer;border:none;outline:none;
+  transition:transform .12s cubic-bezier(.34,1.56,.64,1),box-shadow .15s ease;
+  position:relative;overflow:hidden;
+  isolation:isolate
+}
+.btn:not([disabled]):hover{transform:translateY(-2px) scale(1.01)}
+.btn:not([disabled]):active{transform:translateY(0) scale(1)}
 
-.dark .accent{background:linear-gradient(158deg,rgba(165,110,255,.95),rgba(109,40,217,.99));color:#fff;
-  border:1px solid rgba(255,255,255,.22);
-  box-shadow:0 4px 24px rgba(109,40,217,.50),0 1px 4px rgba(0,0,0,.25),
-    inset 0 1.5px 0 rgba(255,255,255,.30),inset 0 -1px 0 rgba(0,0,0,.08)}
-.dark .accent:hover{box-shadow:0 8px 32px rgba(109,40,217,.60),0 2px 6px rgba(0,0,0,.25),
-  inset 0 1.5px 0 rgba(255,255,255,.32),inset 0 -1px 0 rgba(0,0,0,.08)}
+/* Specular gradient overlay (shared by glass buttons via pseudo) */
+.btn::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(162deg,
+    rgba(255,255,255,.28) 0%,
+    rgba(255,255,255,.10) 22%,
+    rgba(255,255,255,.00) 48%,
+    rgba(0,0,0,.04) 100%
+  );
+  pointer-events:none;z-index:1
+}
+.btn>span{position:relative;z-index:2}
 
-.dark .subtle{background:rgba(255,255,255,.10);color:rgba(255,255,255,.92);
+/* Ghost — pure optical glass, minimal tint */
+.btn-ghost{
+  -webkit-backdrop-filter:url(#lg-btn) blur(0.4px) contrast(1.12);
+  backdrop-filter:url(#lg-btn) blur(0.4px) contrast(1.12);
+  background:rgba(255,255,255,.06);
   border:1px solid rgba(255,255,255,.20);
-  backdrop-filter:blur(16px) saturate(1.8);-webkit-backdrop-filter:blur(16px) saturate(1.8);
-  box-shadow:0 2px 10px rgba(0,0,0,.25),inset 0 1.5px 0 rgba(255,255,255,.22),inset 0 -1px 0 rgba(0,0,0,.10)}
-.dark .subtle:hover{background:rgba(255,255,255,.16);
-  box-shadow:0 4px 16px rgba(0,0,0,.30),inset 0 1.5px 0 rgba(255,255,255,.26),inset 0 -1px 0 rgba(0,0,0,.10)}
+}
+.dark .btn-ghost{
+  color:rgba(255,255,255,.90);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,.55),
+    inset 0 -1px 0 rgba(0,0,0,.28),
+    0 4px 18px rgba(0,0,0,.28)
+}
+.light .btn-ghost{
+  background:rgba(255,255,255,.38);
+  border:1px solid rgba(255,255,255,.72);
+  color:rgba(0,0,0,.76);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,.92),
+    inset 0 -1px 0 rgba(0,0,0,.05),
+    0 4px 14px rgba(0,0,0,.09)
+}
 
-.dark .ghost{background:rgba(255,255,255,.07);color:rgba(255,255,255,.82);
-  border:1px solid rgba(255,255,255,.11);
-  backdrop-filter:blur(12px) saturate(1.6);-webkit-backdrop-filter:blur(12px) saturate(1.6);
-  box-shadow:inset 0 1.5px 0 rgba(255,255,255,.14),inset 0 -1px 0 rgba(0,0,0,.08)}
-.dark .ghost:hover{background:rgba(255,255,255,.12)}
+/* Subtle — slightly more opaque glass */
+.btn-subtle{
+  -webkit-backdrop-filter:url(#lg-btn) blur(0.4px) contrast(1.12);
+  backdrop-filter:url(#lg-btn) blur(0.4px) contrast(1.12);
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.26);
+}
+.dark .btn-subtle{
+  color:rgba(255,255,255,.96);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,.60),
+    inset 0 -1px 0 rgba(0,0,0,.25),
+    0 4px 20px rgba(0,0,0,.30)
+}
+.light .btn-subtle{
+  background:rgba(255,255,255,.52);
+  border:1px solid rgba(255,255,255,.82);
+  color:rgba(0,0,0,.82);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,.96),
+    inset 0 -1px 0 rgba(0,0,0,.04),
+    0 4px 14px rgba(0,0,0,.08)
+}
 
-.dark .danger{background:linear-gradient(158deg,rgba(248,113,113,.92),rgba(185,28,28,.99));color:#fff;
-  border:1px solid rgba(255,255,255,.18);
-  box-shadow:0 4px 22px rgba(220,38,38,.45),0 1px 4px rgba(0,0,0,.25),
-    inset 0 1.5px 0 rgba(255,255,255,.26),inset 0 -1px 0 rgba(0,0,0,.08)}
-.dark .danger:hover{box-shadow:0 8px 28px rgba(220,38,38,.55),0 2px 6px rgba(0,0,0,.25),
-  inset 0 1.5px 0 rgba(255,255,255,.28),inset 0 -1px 0 rgba(0,0,0,.08)}
+/* Prominent — polished solid (near-black), glass-polished treatment */
+.btn-prominent{
+  background:linear-gradient(158deg,rgba(50,50,58,.98) 0%,rgba(9,9,11,1) 68%);
+  border:1px solid rgba(255,255,255,.16);
+  color:#fff;
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,.50),
+    inset 0 -1px 0 rgba(0,0,0,.35),
+    0 6px 22px rgba(0,0,0,.50),
+    0 2px 6px rgba(0,0,0,.30)
+}
+.light .btn-prominent{
+  background:linear-gradient(158deg,rgba(40,40,46,.97) 0%,rgba(9,9,11,1) 68%);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,.42),
+    inset 0 -1px 0 rgba(0,0,0,.28),
+    0 4px 16px rgba(0,0,0,.32),
+    0 1px 4px rgba(0,0,0,.20)
+}
 
-.dark .off{background:rgba(255,255,255,.06);color:rgba(255,255,255,.28);
-  border:1px solid rgba(255,255,255,.08);cursor:not-allowed;transform:none!important}
-
-/* ── Light buttons ───────────────────────────────── */
-.light .prominent{background:linear-gradient(158deg,rgba(40,40,46,.97),rgba(9,9,11,.99));color:#fff;
-  border:1px solid rgba(255,255,255,.12);
-  box-shadow:0 4px 14px rgba(0,0,0,.28),0 1px 3px rgba(0,0,0,.18),
-    inset 0 1.5px 0 rgba(255,255,255,.18),inset 0 -1px 0 rgba(0,0,0,.15)}
-.light .prominent:hover{background:linear-gradient(158deg,rgba(60,60,67,.97),rgba(20,20,22,.99));
-  box-shadow:0 6px 20px rgba(0,0,0,.32),0 2px 5px rgba(0,0,0,.18),
-    inset 0 1.5px 0 rgba(255,255,255,.20),inset 0 -1px 0 rgba(0,0,0,.15)}
-
-.light .accent{background:linear-gradient(158deg,rgba(167,139,250,.96),rgba(109,40,217,.99));color:#fff;
-  border:1px solid rgba(255,255,255,.30);
-  box-shadow:0 4px 20px rgba(109,40,217,.32),0 1px 4px rgba(0,0,0,.14),
-    inset 0 1.5px 0 rgba(255,255,255,.38),inset 0 -1px 0 rgba(0,0,0,.06)}
-.light .accent:hover{box-shadow:0 6px 28px rgba(109,40,217,.42),0 2px 6px rgba(0,0,0,.14),
-  inset 0 1.5px 0 rgba(255,255,255,.40),inset 0 -1px 0 rgba(0,0,0,.06)}
-
-.light .subtle{background:rgba(255,255,255,.62);color:rgba(9,9,11,.88);
-  border:1px solid rgba(255,255,255,.85);
-  backdrop-filter:blur(16px) saturate(1.8);-webkit-backdrop-filter:blur(16px) saturate(1.8);
-  box-shadow:0 2px 10px rgba(0,0,0,.08),inset 0 1.5px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(0,0,0,.04)}
-.light .subtle:hover{background:rgba(255,255,255,.78)}
-
-.light .ghost{background:rgba(255,255,255,.40);color:rgba(9,9,11,.78);
-  border:1px solid rgba(255,255,255,.68);
-  backdrop-filter:blur(12px) saturate(1.6);-webkit-backdrop-filter:blur(12px) saturate(1.6);
-  box-shadow:0 1px 4px rgba(0,0,0,.06),inset 0 1.5px 0 rgba(255,255,255,.85),inset 0 -1px 0 rgba(0,0,0,.03)}
-.light .ghost:hover{background:rgba(255,255,255,.60)}
-
-.light .danger{background:linear-gradient(158deg,rgba(252,165,165,.92),rgba(185,28,28,.99));color:#fff;
+/* Accent — polished violet glass */
+.btn-accent{
+  background:linear-gradient(158deg,rgba(178,128,255,.96) 0%,rgba(109,40,217,1) 68%);
   border:1px solid rgba(255,255,255,.28);
-  box-shadow:0 4px 18px rgba(220,38,38,.30),0 1px 4px rgba(0,0,0,.14),
-    inset 0 1.5px 0 rgba(255,255,255,.30),inset 0 -1px 0 rgba(0,0,0,.06)}
-.light .danger:hover{box-shadow:0 6px 24px rgba(220,38,38,.38),0 2px 5px rgba(0,0,0,.14),
-  inset 0 1.5px 0 rgba(255,255,255,.32),inset 0 -1px 0 rgba(0,0,0,.06)}
+  color:#fff;
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,.60),
+    inset 0 -1px 0 rgba(0,0,0,.12),
+    0 6px 28px rgba(109,40,217,.65),
+    0 2px 8px rgba(0,0,0,.22)
+}
+.light .btn-accent{
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,.55),
+    inset 0 -1px 0 rgba(0,0,0,.08),
+    0 4px 22px rgba(109,40,217,.38),
+    0 1px 5px rgba(0,0,0,.14)
+}
 
-/* ── Card ────────────────────────────────────────── */
-.card{border-radius:1.25rem;padding:1.5rem;max-width:320px}
-.dark .card{background:rgba(255,255,255,.10);color:rgba(255,255,255,.86);
-  backdrop-filter:blur(28px) saturate(1.8);-webkit-backdrop-filter:blur(28px) saturate(1.8);
-  border:1px solid rgba(255,255,255,.18);
-  box-shadow:0 12px 48px rgba(0,0,0,.35),0 4px 16px rgba(0,0,0,.20),
-    inset 0 1.5px 0 rgba(255,255,255,.24),inset 0 -1px 0 rgba(0,0,0,.08)}
-.light .card{background:rgba(255,255,255,.68);color:rgba(9,9,11,.84);
-  backdrop-filter:blur(28px) saturate(1.8);-webkit-backdrop-filter:blur(28px) saturate(1.8);
-  border:1px solid rgba(255,255,255,.90);
-  box-shadow:0 12px 48px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.05),
-    inset 0 1.5px 0 rgba(255,255,255,.98),inset 0 -1px 0 rgba(0,0,0,.03)}
-.card h3{font-size:1rem;font-weight:600;letter-spacing:-.01em;margin-bottom:.5rem}
-.card p{font-size:.875rem;opacity:.65;line-height:1.5;margin-bottom:1rem}
-.foot{padding-top:.875rem;display:flex;gap:.5rem;justify-content:flex-end}
-.dark .foot{border-top:1px solid rgba(255,255,255,.12)}
-.light .foot{border-top:1px solid rgba(0,0,0,.06)}
-.sm{padding:.375rem .875rem;min-height:unset;font-size:.8125rem}
+/* Danger — polished red glass */
+.btn-danger{
+  background:linear-gradient(158deg,rgba(252,130,130,.94) 0%,rgba(185,28,28,1) 68%);
+  border:1px solid rgba(255,255,255,.22);
+  color:#fff;
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,.52),
+    inset 0 -1px 0 rgba(0,0,0,.12),
+    0 6px 24px rgba(220,38,38,.55),
+    0 2px 6px rgba(0,0,0,.22)
+}
 
-/* ── Input ───────────────────────────────────────── */
-.field{display:flex;flex-direction:column;gap:.4rem;min-width:240px}
+/* Disabled */
+.btn[disabled]{
+  background:rgba(255,255,255,.06);color:rgba(255,255,255,.28);
+  border:1px solid rgba(255,255,255,.08);cursor:not-allowed;
+  box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none
+}
+.light .btn[disabled]{
+  background:rgba(0,0,0,.05);color:rgba(0,0,0,.25);border:1px solid rgba(0,0,0,.08)
+}
+
+.btn-sm{padding:.375rem .875rem;min-height:unset;font-size:.8125rem;border-radius:.625rem}
+
+/* ─── Cards ─── */
+.card{
+  border-radius:1.25rem;padding:1.5rem;
+  position:relative;overflow:hidden;isolation:isolate;
+  -webkit-backdrop-filter:url(#lg-card) blur(0.6px) contrast(1.08);
+  backdrop-filter:url(#lg-card) blur(0.6px) contrast(1.08);
+}
+.card::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(
+    158deg,
+    rgba(255,255,255,.24) 0%,
+    rgba(255,255,255,.08) 22%,
+    rgba(255,255,255,.00) 52%,
+    rgba(0,0,0,.05) 100%
+  );
+  pointer-events:none;z-index:1
+}
+.card-content{position:relative;z-index:2}
+.dark .card{
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.22);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,.55),
+    inset 0 -1px 0 rgba(0,0,0,.22),
+    0 16px 50px rgba(0,0,0,.40),
+    0 4px 16px rgba(0,0,0,.22)
+}
+.light .card{
+  background:rgba(255,255,255,.48);
+  border:1px solid rgba(255,255,255,.82);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,.96),
+    inset 0 -1px 0 rgba(0,0,0,.04),
+    0 16px 50px rgba(0,0,0,.10),
+    0 4px 16px rgba(0,0,0,.06)
+}
+.card h3{font-size:1rem;font-weight:600;letter-spacing:-.015em;margin-bottom:.5rem}
+.dark .card h3{color:rgba(255,255,255,.90)}
+.light .card h3{color:rgba(0,0,0,.82)}
+.card p{font-size:.875rem;line-height:1.5;margin-bottom:1.125rem}
+.dark .card p{color:rgba(255,255,255,.52)}
+.light .card p{color:rgba(0,0,0,.50)}
+.card-foot{
+  padding-top:.875rem;display:flex;gap:.5rem;justify-content:flex-end
+}
+.dark .card-foot{border-top:1px solid rgba(255,255,255,.12)}
+.light .card-foot{border-top:1px solid rgba(0,0,0,.07)}
+
+/* ─── Inputs ─── */
+.field{display:flex;flex-direction:column;gap:.375rem;min-width:260px}
 .lbl{font-size:.875rem;font-weight:500}
-.dark .lbl{color:rgba(255,255,255,.72)}.light .lbl{color:rgba(9,9,11,.70)}
-.inp{width:100%;padding:.625rem .875rem;font-size:.875rem;font-family:inherit;
+.dark .lbl{color:rgba(255,255,255,.68)}
+.light .lbl{color:rgba(0,0,0,.62)}
+.inp{
+  width:100%;padding:.625rem .875rem;
+  font-size:.875rem;font-family:inherit;
   border-radius:.625rem;outline:none;
-  transition:box-shadow .15s ease,border-color .15s ease}
-.dark .inp{background:rgba(255,255,255,.08);color:rgba(255,255,255,.88);
-  border:1px solid rgba(255,255,255,.14);
-  backdrop-filter:blur(16px) saturate(1.6);-webkit-backdrop-filter:blur(16px) saturate(1.6);
-  box-shadow:inset 0 1.5px 3px rgba(0,0,0,.15),0 1px 4px rgba(0,0,0,.15)}
-.dark .inp::placeholder{color:rgba(255,255,255,.28)}
-.dark .inp:focus{border-color:rgba(139,92,246,.65);
-  box-shadow:0 0 0 3px rgba(139,92,246,.22),inset 0 1.5px 3px rgba(0,0,0,.15)}
-.light .inp{background:rgba(255,255,255,.70);color:rgba(9,9,11,.88);
-  border:1px solid rgba(255,255,255,.90);
-  backdrop-filter:blur(16px) saturate(1.6);-webkit-backdrop-filter:blur(16px) saturate(1.6);
-  box-shadow:inset 0 1.5px 3px rgba(0,0,0,.05),0 1px 4px rgba(0,0,0,.06)}
-.light .inp::placeholder{color:rgba(9,9,11,.30)}
-.light .inp:focus{border-color:rgba(139,92,246,.55);
-  box-shadow:0 0 0 3px rgba(139,92,246,.18),inset 0 1.5px 3px rgba(0,0,0,.04)}
+  -webkit-backdrop-filter:url(#lg-inp) blur(0.4px) contrast(1.08);
+  backdrop-filter:url(#lg-inp) blur(0.4px) contrast(1.08);
+  transition:box-shadow .15s,border-color .15s
+}
+.dark .inp{
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.16);
+  color:rgba(255,255,255,.92);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,.38),
+    inset 0 -1px 0 rgba(0,0,0,.22),
+    inset 0 2px 8px rgba(0,0,0,.20)
+}
+.dark .inp::placeholder{color:rgba(255,255,255,.26)}
+.dark .inp:focus{
+  border-color:rgba(139,92,246,.70);
+  box-shadow:0 0 0 3px rgba(139,92,246,.24),
+    inset 0 1.5px 0 rgba(255,255,255,.38),
+    inset 0 -1px 0 rgba(0,0,0,.22),
+    inset 0 2px 8px rgba(0,0,0,.20)
+}
+.light .inp{
+  background:rgba(255,255,255,.58);
+  border:1px solid rgba(255,255,255,.84);
+  color:rgba(0,0,0,.88);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,.95),
+    inset 0 -1px 0 rgba(0,0,0,.04),
+    inset 0 2px 6px rgba(0,0,0,.04)
+}
+.light .inp::placeholder{color:rgba(0,0,0,.26)}
+.light .inp:focus{
+  border-color:rgba(139,92,246,.55);
+  box-shadow:0 0 0 3px rgba(139,92,246,.18),
+    inset 0 1.5px 0 rgba(255,255,255,.95),
+    inset 0 -1px 0 rgba(0,0,0,.04)
+}
 
-/* ── Badge ───────────────────────────────────────── */
-.badge{display:inline-flex;align-items:center;border-radius:9999px;font-size:.8125rem;
-  font-weight:500;letter-spacing:-.01em;padding:.25rem .75rem;white-space:nowrap;
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-.dark .b-n{background:rgba(255,255,255,.12);color:rgba(255,255,255,.80);
-  border:1px solid rgba(255,255,255,.18);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.20),0 1px 4px rgba(0,0,0,.18)}
-.dark .b-a{background:rgba(139,92,246,.22);color:#c4b5fd;border:1px solid rgba(139,92,246,.35);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 1px 4px rgba(109,40,217,.22)}
-.dark .b-s{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.28);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.14)}
-.dark .b-w{background:rgba(251,191,36,.15);color:#fbbf24;border:1px solid rgba(251,191,36,.28);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.14)}
-.dark .b-e{background:rgba(220,38,38,.14);color:#fca5a5;border:1px solid rgba(220,38,38,.25);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
-.light .b-n{background:rgba(255,255,255,.68);color:rgba(9,9,11,.72);
-  border:1px solid rgba(255,255,255,.90);
-  box-shadow:inset 0 1.5px 0 rgba(255,255,255,.98),0 1px 4px rgba(0,0,0,.07)}
-.light .b-a{background:rgba(124,58,237,.12);color:#6d28d9;border:1px solid rgba(124,58,237,.25);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.30)}
-.light .b-s{background:rgba(22,163,74,.12);color:#15803d;border:1px solid rgba(22,163,74,.22);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.28)}
-.light .b-w{background:rgba(180,83,9,.10);color:#b45309;border:1px solid rgba(180,83,9,.20);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.26)}
-.light .b-e{background:rgba(185,28,28,.10);color:#b91c1c;border:1px solid rgba(185,28,28,.20);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.26)}
+/* ─── Badges ─── */
+.badge{
+  display:inline-flex;align-items:center;position:relative;overflow:hidden;
+  border-radius:9999px;font-size:.8125rem;font-weight:500;letter-spacing:-.01em;
+  padding:.25rem .75rem;white-space:nowrap;
+  -webkit-backdrop-filter:url(#lg-badge) blur(0.4px) contrast(1.1);
+  backdrop-filter:url(#lg-badge) blur(0.4px) contrast(1.1);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.50),0 1px 4px rgba(0,0,0,.12)
+}
+.badge::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(160deg,rgba(255,255,255,.26) 0%,rgba(255,255,255,.04) 50%,transparent 70%);
+  pointer-events:none
+}
+.badge>span{position:relative;z-index:1}
+
+.dark .b-n{background:rgba(255,255,255,.10);color:rgba(255,255,255,.82);border:1px solid rgba(255,255,255,.18)}
+.dark .b-a{background:rgba(139,92,246,.20);color:#c4b5fd;border:1px solid rgba(139,92,246,.38)}
+.dark .b-s{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.30)}
+.dark .b-w{background:rgba(251,191,36,.15);color:#fbbf24;border:1px solid rgba(251,191,36,.30)}
+.dark .b-e{background:rgba(220,38,38,.14);color:#fca5a5;border:1px solid rgba(220,38,38,.26)}
+
+.light .b-n{background:rgba(255,255,255,.60);color:rgba(0,0,0,.68);border:1px solid rgba(255,255,255,.88)}
+.light .b-a{background:rgba(124,58,237,.12);color:#6d28d9;border:1px solid rgba(124,58,237,.26)}
+.light .b-s{background:rgba(22,163,74,.12);color:#15803d;border:1px solid rgba(22,163,74,.24)}
+.light .b-w{background:rgba(180,83,9,.10);color:#b45309;border:1px solid rgba(180,83,9,.22)}
+.light .b-e{background:rgba(185,28,28,.10);color:#b91c1c;border:1px solid rgba(185,28,28,.22)}
 </style>
 </head>
 <body>
 
-<!-- ===== DARK ===== -->
-<div class="dark">
-  <div class="tag">Dark Mode — Liquid Glass</div>
+<!-- ─── Hidden SVG filters ─── -->
+<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+  <defs>
+    <!--
+      feDisplacementMap with canvas-generated displacement map.
+      Outward-pointing vectors → edges sample content from outside the element
+      → background content bends INTO the glass at edges (convex lens).
+      scale > 0: R=255 → +scale/2 px X, R=0 → -scale/2 px X
+    -->
+    <filter id="lg-btn" x="-28%" y="-28%" width="156%" height="156%" color-interpolation-filters="sRGB">
+      <feImage id="lg-btn-dmap" result="dmap" preserveAspectRatio="none"/>
+      <feDisplacementMap in="SourceGraphic" in2="dmap" scale="60"
+        xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="lg-card" x="-22%" y="-22%" width="144%" height="144%" color-interpolation-filters="sRGB">
+      <feImage id="lg-card-dmap" result="dmap" preserveAspectRatio="none"/>
+      <feDisplacementMap in="SourceGraphic" in2="dmap" scale="55"
+        xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="lg-inp" x="-28%" y="-28%" width="156%" height="156%" color-interpolation-filters="sRGB">
+      <feImage id="lg-inp-dmap" result="dmap" preserveAspectRatio="none"/>
+      <feDisplacementMap in="SourceGraphic" in2="dmap" scale="50"
+        xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="lg-badge" x="-35%" y="-35%" width="170%" height="170%" color-interpolation-filters="sRGB">
+      <feImage id="lg-badge-dmap" result="dmap" preserveAspectRatio="none"/>
+      <feDisplacementMap in="SourceGraphic" in2="dmap" scale="40"
+        xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+
+<!-- DARK -->
+<div class="scene dark">
+  <div class="section-label">Dark Mode — Liquid Glass v2 · Optical Refraction</div>
 
   <div class="group">
     <h2>Buttons</h2>
     <div class="row">
-      <button class="btn prominent">Prominent</button>
-      <button class="btn accent">Accent</button>
-      <button class="btn subtle">Subtle</button>
-      <button class="btn ghost">Ghost</button>
-      <button class="btn danger">Danger</button>
-      <button class="btn off" disabled>Disabled</button>
+      <button class="btn btn-prominent"><span>Prominent</span></button>
+      <button class="btn btn-accent"><span>Accent</span></button>
+      <button class="btn btn-subtle"><span>Subtle</span></button>
+      <button class="btn btn-ghost"><span>Ghost</span></button>
+      <button class="btn btn-danger"><span>Danger</span></button>
+      <button class="btn" disabled><span>Disabled</span></button>
     </div>
   </div>
 
   <div class="group">
     <h2>Badges</h2>
     <div class="row">
-      <span class="badge b-n">Neutral</span>
-      <span class="badge b-a">Accent</span>
-      <span class="badge b-s">Active</span>
-      <span class="badge b-w">Pending</span>
-      <span class="badge b-e">Failed</span>
+      <span class="badge b-n"><span>Neutral</span></span>
+      <span class="badge b-a"><span>Accent</span></span>
+      <span class="badge b-s"><span>Active</span></span>
+      <span class="badge b-w"><span>Pending</span></span>
+      <span class="badge b-e"><span>Failed</span></span>
     </div>
   </div>
 
@@ -222,47 +384,51 @@ h2{font-size:1.1rem;font-weight:600;letter-spacing:-.02em;margin-bottom:1rem}
     <h2>Cards</h2>
     <div class="grid">
       <div class="card">
-        <h3>Usage this month</h3>
-        <p>Track API calls, token usage, and cost in real-time.</p>
-        <div class="foot">
-          <button class="btn ghost sm">Dismiss</button>
-          <button class="btn accent sm">View details</button>
+        <div class="card-content">
+          <h3>Usage this month</h3>
+          <p>Track API calls, token usage, and cost in real-time across all your projects.</p>
+          <div class="card-foot">
+            <button class="btn btn-ghost btn-sm"><span>Dismiss</span></button>
+            <button class="btn btn-accent btn-sm"><span>View details</span></button>
+          </div>
         </div>
       </div>
       <div class="card">
-        <h3>Danger zone</h3>
-        <p>Irreversible actions that permanently affect your account.</p>
-        <div class="foot">
-          <button class="btn danger sm">Delete account</button>
+        <div class="card-content">
+          <h3>Danger zone</h3>
+          <p>Irreversible actions that permanently affect your account and all associated data.</p>
+          <div class="card-foot">
+            <button class="btn btn-danger btn-sm"><span>Delete account</span></button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ===== LIGHT ===== -->
-<div class="light">
-  <div class="tag">Light Mode — Liquid Glass</div>
+<!-- LIGHT -->
+<div class="scene light">
+  <div class="section-label">Light Mode — Liquid Glass v2 · Optical Refraction</div>
 
   <div class="group">
     <h2>Buttons</h2>
     <div class="row">
-      <button class="btn prominent">Prominent</button>
-      <button class="btn accent">Accent</button>
-      <button class="btn subtle">Subtle</button>
-      <button class="btn ghost">Ghost</button>
-      <button class="btn danger">Danger</button>
+      <button class="btn btn-prominent"><span>Prominent</span></button>
+      <button class="btn btn-accent"><span>Accent</span></button>
+      <button class="btn btn-subtle"><span>Subtle</span></button>
+      <button class="btn btn-ghost"><span>Ghost</span></button>
+      <button class="btn btn-danger"><span>Danger</span></button>
     </div>
   </div>
 
   <div class="group">
     <h2>Badges</h2>
     <div class="row">
-      <span class="badge b-n">Neutral</span>
-      <span class="badge b-a">Accent</span>
-      <span class="badge b-s">Active</span>
-      <span class="badge b-w">Pending</span>
-      <span class="badge b-e">Failed</span>
+      <span class="badge b-n"><span>Neutral</span></span>
+      <span class="badge b-a"><span>Accent</span></span>
+      <span class="badge b-s"><span>Active</span></span>
+      <span class="badge b-w"><span>Pending</span></span>
+      <span class="badge b-e"><span>Failed</span></span>
     </div>
   </div>
 
@@ -284,23 +450,77 @@ h2{font-size:1.1rem;font-weight:600;letter-spacing:-.02em;margin-bottom:1rem}
     <h2>Cards</h2>
     <div class="grid">
       <div class="card">
-        <h3>Account settings</h3>
-        <p>Manage your profile, preferences, and security settings.</p>
-        <div class="foot">
-          <button class="btn subtle sm">Cancel</button>
-          <button class="btn prominent sm">Save changes</button>
+        <div class="card-content">
+          <h3>Account settings</h3>
+          <p>Manage your profile, preferences, notification settings, and connected devices.</p>
+          <div class="card-foot">
+            <button class="btn btn-subtle btn-sm"><span>Cancel</span></button>
+            <button class="btn btn-prominent btn-sm"><span>Save changes</span></button>
+          </div>
         </div>
       </div>
       <div class="card">
-        <h3>Pro plan</h3>
-        <p>14 days remaining in your trial. Upgrade any time.</p>
-        <div class="foot">
-          <button class="btn accent sm">Upgrade now</button>
+        <div class="card-content">
+          <h3>Pro plan</h3>
+          <p>14 days remaining in your trial. Upgrade now to keep all your projects and data.</p>
+          <div class="card-foot">
+            <button class="btn btn-accent btn-sm"><span>Upgrade now</span></button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
+<script>
+(function () {
+  // Generate a radial displacement map on canvas.
+  // Each pixel encodes a displacement vector pointing outward from the element centre,
+  // weighted by edge proximity (strongest at rim, zero at centre).
+  // R channel = X displacement, G channel = Y displacement.
+  // Neutral = 128 (no displacement). With feDisplacementMap scale > 0:
+  //   R=255 → +scale/2 px right   R=0 → -scale/2 px left
+  // Outward-pointing vectors cause edges to sample content from outside the element,
+  // so the background wraps/bends into the glass at the rim (convex-lens refraction).
+  function buildDmap(res) {
+    const c = document.createElement('canvas');
+    c.width = res; c.height = res;
+    const ctx = c.getContext('2d');
+    const img = ctx.createImageData(res, res);
+    const px = img.data;
+    for (let y = 0; y < res; y++) {
+      for (let x = 0; x < res; x++) {
+        // Normalise to [-1, 1]
+        const nx = (x / (res - 1)) * 2 - 1;
+        const ny = (y / (res - 1)) * 2 - 1;
+        const r  = Math.sqrt(nx * nx + ny * ny);
+        const t  = Math.min(r, 1.0);
+
+        // Edge weighting: power curve — zero at centre, full at edge
+        const w  = Math.pow(t, 1.6);
+
+        // Outward direction (normalised), zero at exact centre
+        const len = r > 0.001 ? r : 0.001;
+        const dx  = (nx / len) * w;   // +1 at right rim, -1 at left rim
+        const dy  = (ny / len) * w;   // +1 at bottom rim, -1 at top rim
+
+        const i = (y * res + x) * 4;
+        px[i]   = Math.max(0, Math.min(255, Math.round(128 + dx * 127)));
+        px[i+1] = Math.max(0, Math.min(255, Math.round(128 + dy * 127)));
+        px[i+2] = 0;
+        px[i+3] = 255;
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+    return c.toDataURL();
+  }
+
+  const url = buildDmap(256);
+  ['lg-btn-dmap','lg-card-dmap','lg-inp-dmap','lg-badge-dmap'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.setAttribute('href', url);
+  });
+})();
+</script>
 </body>
 </html>

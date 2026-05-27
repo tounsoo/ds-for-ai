@@ -59,8 +59,8 @@ export class DsButton extends BaseElement {
         align-items: center;
         justify-content: center;
         gap: var(--ds-space-2);
-        border: 1.5px solid transparent;
-        border-radius: var(--ds-button-radius, var(--ds-radius-md));
+        border: 1px solid transparent;
+        border-radius: var(--ds-button-radius, var(--ds-radius-lg));
         cursor: pointer;
         font-family: var(--ds-font-family-sans);
         font-weight: var(--ds-font-weight-medium);
@@ -68,68 +68,133 @@ export class DsButton extends BaseElement {
         line-height: var(--ds-line-height-tight);
         text-decoration: none;
         white-space: nowrap;
+        position: relative;
+        overflow: hidden;
+        isolation: isolate;
+        /* All variants share the same glass backdrop — tint varies per variant */
+        -webkit-backdrop-filter: url(#ds-glass) blur(12px) saturate(1.6);
+        backdrop-filter: url(#ds-glass) blur(12px) saturate(1.6);
         transition:
           background-color var(--ds-duration-fast) var(--ds-easing-default),
           border-color var(--ds-duration-fast) var(--ds-easing-default),
           box-shadow var(--ds-duration-fast) var(--ds-easing-default),
-          color var(--ds-duration-fast) var(--ds-easing-default);
+          color var(--ds-duration-fast) var(--ds-easing-default),
+          transform 120ms cubic-bezier(0.34, 1.56, 0.64, 1);
       }
+
+      /* Specular top-rim highlight — sits between backdrop and text via z-index:-1 inside isolation */
+      button::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        z-index: -1;
+        background: radial-gradient(ellipse 80% 45% at 50% -5%,
+          rgba(255, 255, 255, 0.70) 0%,
+          rgba(255, 255, 255, 0.25) 45%,
+          transparent 100%
+        );
+        pointer-events: none;
+      }
+
+      button:not(:disabled):hover  { transform: translateY(-1.5px); }
+      button:not(:disabled):active { transform: translateY(0); }
 
       :host([size='small']) button  { font-size: var(--ds-text-sm); padding: var(--ds-space-1) var(--ds-space-3);  min-height: 2.125rem; }
       :host([size='large']) button  { font-size: var(--ds-text-md); padding: var(--ds-space-3) var(--ds-space-6);  min-height: 3.25rem; }
       :host(:not([size])) button,
       :host([size='medium']) button { font-size: var(--ds-text-sm); padding: var(--ds-space-2) var(--ds-space-4);  min-height: 2.75rem; }
 
-      /* prominent (default) */
+      /* prominent — dark-tinted glass (auto-inverts to light tint in dark mode via token) */
       :host(:not([variant])) button,
       :host([variant='prominent']) button {
-        background: var(--ds-color-action-prominent);
+        background: color-mix(in srgb, var(--ds-color-action-prominent) 60%, transparent);
         color: var(--ds-color-action-prominent-fg);
+        border-color: rgba(255, 255, 255, 0.65);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.75),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.22),
+          0 6px 24px rgba(0, 0, 0, 0.30),
+          0 2px 6px rgba(0, 0, 0, 0.18);
       }
       :host(:not([variant])) button:hover:not(:disabled),
       :host([variant='prominent']) button:hover:not(:disabled) {
-        background: var(--ds-color-action-prominent-hover);
+        background: color-mix(in srgb, var(--ds-color-action-prominent-hover) 64%, transparent);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.80),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.22),
+          0 10px 32px rgba(0, 0, 0, 0.38),
+          0 3px 8px rgba(0, 0, 0, 0.20);
       }
 
-      /* accent */
+      /* accent — violet-tinted glass */
       :host([variant='accent']) button {
-        background: var(--ds-color-action-accent);
+        background: color-mix(in srgb, var(--ds-color-action-accent) 58%, transparent);
         color: var(--ds-color-text-on-action);
+        border-color: rgba(255, 255, 255, 0.65);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.75),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+          0 6px 28px color-mix(in srgb, var(--ds-color-action-accent) 55%, transparent),
+          0 2px 6px rgba(0, 0, 0, 0.18);
       }
       :host([variant='accent']) button:hover:not(:disabled) {
-        background: var(--ds-color-action-accent-hover);
+        background: color-mix(in srgb, var(--ds-color-action-accent-hover) 62%, transparent);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.80),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+          0 10px 36px color-mix(in srgb, var(--ds-color-action-accent) 65%, transparent),
+          0 3px 8px rgba(0, 0, 0, 0.18);
       }
 
-      /* subtle */
+      /* subtle — lightly tinted glass */
       :host([variant='subtle']) button {
-        background: transparent;
+        background: var(--ds-glass-surface-bg);
         color: var(--ds-color-action-prominent);
-        border-color: var(--ds-color-action-prominent);
+        border-color: var(--ds-glass-surface-border);
+        box-shadow:
+          inset 0 1px 0 var(--ds-glass-surface-spec),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.10);
       }
       :host([variant='subtle']) button:hover:not(:disabled) {
-        background: var(--ds-color-action-prominent-subtle);
+        background: color-mix(in srgb, var(--ds-glass-surface-bg) 120%, rgba(255,255,255,0.12));
       }
 
-      /* ghost */
+      /* ghost — near-transparent glass */
       :host([variant='ghost']) button {
-        background: transparent;
+        background: var(--ds-glass-ghost-bg);
         color: var(--ds-color-text-primary);
+        border-color: var(--ds-glass-ghost-border);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.70),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.06);
       }
       :host([variant='ghost']) button:hover:not(:disabled) {
-        background: var(--ds-color-surface-subtle);
+        background: var(--ds-glass-surface-bg);
       }
 
-      /* danger */
+      /* danger — red-tinted glass */
       :host([variant='danger']) button {
-        background: var(--ds-color-action-danger);
+        background: color-mix(in srgb, var(--ds-color-action-danger) 58%, transparent);
         color: var(--ds-color-text-on-action);
+        border-color: rgba(255, 255, 255, 0.62);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.75),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+          0 6px 24px color-mix(in srgb, var(--ds-color-action-danger) 50%, transparent),
+          0 2px 6px rgba(0, 0, 0, 0.18);
       }
       :host([variant='danger']) button:hover:not(:disabled) {
-        background: var(--ds-color-action-danger-hover);
+        background: color-mix(in srgb, var(--ds-color-action-danger-hover) 62%, transparent);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.78),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+          0 10px 32px color-mix(in srgb, var(--ds-color-action-danger) 62%, transparent),
+          0 3px 8px rgba(0, 0, 0, 0.18);
       }
 
       button:disabled {
-        opacity: 0.5;
+        opacity: 0.40;
         cursor: not-allowed;
       }
 

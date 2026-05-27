@@ -79,10 +79,16 @@ export class DsInput extends BaseElement {
         font-family: var(--ds-font-family-sans);
         line-height: var(--ds-line-height-tight);
         color: var(--ds-color-text-primary);
-        background: var(--ds-color-surface-default);
-        border: 1.5px solid var(--ds-color-border-default);
-        border-radius: var(--ds-radius-md);
+        background: var(--ds-input-glass-bg);
+        border: 1px solid var(--ds-input-glass-border);
+        border-radius: var(--ds-radius-lg);
         outline: none;
+        -webkit-backdrop-filter: url(#ds-glass) blur(0.4px) contrast(1.08);
+        backdrop-filter: url(#ds-glass) blur(0.4px) contrast(1.08);
+        box-shadow:
+          inset 0 1.5px 0 rgba(255, 255, 255, 0.55),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.10),
+          inset 0 2px 6px rgba(0, 0, 0, 0.06);
         transition:
           border-color var(--ds-duration-fast) var(--ds-easing-default),
           box-shadow var(--ds-duration-fast) var(--ds-easing-default);
@@ -94,7 +100,11 @@ export class DsInput extends BaseElement {
 
       input:focus {
         border-color: var(--ds-color-border-focus);
-        box-shadow: 0 0 0 3px rgb(139 92 246 / 0.2);
+        box-shadow:
+          0 0 0 3px rgb(139 92 246 / 0.2),
+          inset 0 1.5px 0 rgba(255, 255, 255, 0.55),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.10),
+          inset 0 2px 6px rgba(0, 0, 0, 0.06);
       }
 
       :host([error]) input {
